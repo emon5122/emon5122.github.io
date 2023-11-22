@@ -1,16 +1,18 @@
+import Link from "next/link";
+
 const Headers = () => {
     return (
         <nav className="absolute top-0 z-10 flex w-full justify-between px-2">
-            <a href="/">
+            <Link href="/">
                 <p className="text-4xl font-extrabold">IHE</p>
-            </a>
+            </Link>
             <div className="flex justify-center space-x-2">
-                <a href="/about">
+                <Link href="/about">
                     <p className="text-2xl font-semibold">About</p>
-                </a>
-                <a href="/portfolio">
+                </Link>
+                <Link href="/portfolio">
                     <p className="text-2xl font-semibold">Portfolio</p>
-                </a>
+                </Link>
                 </div>
         </nav>
     );

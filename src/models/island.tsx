@@ -6,24 +6,229 @@ Source: https://sketchfab.com/3d-models/isla-diorama-da5678da27c940e9aa01f3192eb
 Title: Isla - Diorama
 */
 "use client"
+import { useWindowSize } from "@react-hookz/web/esm/useWindowSize";
 import { a } from "@react-spring/three";
 import { useGLTF } from "@react-three/drei";
-import { GroupProps, useFrame, useThree } from "@react-three/fiber";
+import { Vector3, useFrame, useThree } from "@react-three/fiber";
 import React, { useEffect, useRef } from "react";
+import { GLTF } from "three-stdlib";
+
+
+type GLTFResult = GLTF & {
+  nodes: {
+    polySurface56_Suelos_0: THREE.Mesh;
+    pCylinder18_Suelos_0: THREE.Mesh;
+    pCylinder19_Torre_0: THREE.Mesh;
+    pCube19_Techos_0: THREE.Mesh;
+    pCube20_Techos_0: THREE.Mesh;
+    pCube22_Techos_0: THREE.Mesh;
+    pCube26_Central_0: THREE.Mesh;
+    pGear7_Extras_0: THREE.Mesh;
+    pCylinder20_Extras_0: THREE.Mesh;
+    pGear8_Extras_0: THREE.Mesh;
+    pGear9_Extras_0: THREE.Mesh;
+    pCube31_Extras_0: THREE.Mesh;
+    polySurface79_Pilar_0: THREE.Mesh;
+    polySurface80_Pilar_0: THREE.Mesh;
+    polySurface81_Pilar_0: THREE.Mesh;
+    polySurface82_Pilar_0: THREE.Mesh;
+    pCube48_Techos_0: THREE.Mesh;
+    polySurface112_Diamante_0: THREE.Mesh;
+    pCube59_Roca_3_0: THREE.Mesh;
+    ["polySurface88_Rub�_0"]: THREE.Mesh;
+    ["polySurface98_Rub�_0"]: THREE.Mesh;
+    ["polySurface99_Rub�_0"]: THREE.Mesh;
+    ["polySurface103_Rub�_0"]: THREE.Mesh;
+    ["pCylinder35_Rub�_0"]: THREE.Mesh;
+    polySurface167_aiStandardSurface3_0: THREE.Mesh;
+    polySurface168_aiStandardSurface3_0: THREE.Mesh;
+    polySurface172_aiStandardSurface3_0: THREE.Mesh;
+    polySurface139_aiStandardSurface3_0: THREE.Mesh;
+    polySurface140_aiStandardSurface3_0: THREE.Mesh;
+    polySurface144_aiStandardSurface3_0: THREE.Mesh;
+    pCube72_aiStandardSurface3_0: THREE.Mesh;
+    pCube79_Extras_0: THREE.Mesh;
+    pCube80_Extras_0: THREE.Mesh;
+    pCube81_Extras_0: THREE.Mesh;
+    pCylinder42_Esmeralda_0: THREE.Mesh;
+    pCylinder43_Esmeralda_0: THREE.Mesh;
+    polySurface75_Esmeralda_0: THREE.Mesh;
+    polySurface78_Esmeralda_0: THREE.Mesh;
+    pCube82_Esmeralda_0: THREE.Mesh;
+    pGear10_Extras_0: THREE.Mesh;
+    pGear11_Extras_0: THREE.Mesh;
+    pCylinder45_Extras_0: THREE.Mesh;
+    pCylinder46_Extras_0: THREE.Mesh;
+    pGear12_Extras_0: THREE.Mesh;
+    pGear13_Extras_0: THREE.Mesh;
+    pCylinder47_Derecha_0: THREE.Mesh;
+    pCube84_aiMixShader3_0: THREE.Mesh;
+    pCube85_Extras_0: THREE.Mesh;
+    pCube86_Extras_0: THREE.Mesh;
+    pCube88_Techos_0: THREE.Mesh;
+    pCube89_Techos_0: THREE.Mesh;
+    pCube90_Techos_0: THREE.Mesh;
+    pSphere3_Personaje_0: THREE.Mesh;
+    pCylinder48_aiStandardSurface11_0: THREE.Mesh;
+    pCylinder49_aiStandardSurface11_0: THREE.Mesh;
+    pCube92_Techos_0: THREE.Mesh;
+    polySurface87_aiStandardSurface3_0: THREE.Mesh;
+    polySurface87_Diamante_0: THREE.Mesh;
+    ["polySurface87_Rub�_0"]: THREE.Mesh;
+    polySurface90_Diamante_0: THREE.Mesh;
+    ["polySurface90_Rub�_0"]: THREE.Mesh;
+    polySurface90_aiStandardSurface3_0: THREE.Mesh;
+    polySurface100_Diamante_0: THREE.Mesh;
+    ["polySurface100_Rub�_0"]: THREE.Mesh;
+    polySurface107_aiStandardSurface3_0: THREE.Mesh;
+    polySurface107_Diamante_0: THREE.Mesh;
+    polySurface113_Diamante_0: THREE.Mesh;
+    ["polySurface113_Rub�_0"]: THREE.Mesh;
+    polySurface117_aiStandardSurface3_0: THREE.Mesh;
+    polySurface117_Diamante_0: THREE.Mesh;
+    ["polySurface124_Rub�_0"]: THREE.Mesh;
+    polySurface124_aiStandardSurface3_0: THREE.Mesh;
+    ["polySurface131_Rub�_0"]: THREE.Mesh;
+    polySurface131_Diamante_0: THREE.Mesh;
+    ["polySurface134_Rub�_0"]: THREE.Mesh;
+    polySurface134_Diamante_0: THREE.Mesh;
+    ["polySurface142_Rub�_0"]: THREE.Mesh;
+    polySurface142_Diamante_0: THREE.Mesh;
+    polySurface142_aiStandardSurface3_0: THREE.Mesh;
+    polySurface148_aiStandardSurface3_0: THREE.Mesh;
+    ["polySurface148_Rub�_0"]: THREE.Mesh;
+    ["polySurface154_Rub�_0"]: THREE.Mesh;
+    polySurface154_Diamante_0: THREE.Mesh;
+    polySurface161_Diamante_0: THREE.Mesh;
+    polySurface161_aiStandardSurface3_0: THREE.Mesh;
+    polySurface184_aiStandardSurface3_0: THREE.Mesh;
+    polySurface185_aiStandardSurface3_0: THREE.Mesh;
+    ["polySurface186_Rub�_0"]: THREE.Mesh;
+    ["polySurface187_Rub�_0"]: THREE.Mesh;
+    ["polySurface188_Rub�_0"]: THREE.Mesh;
+    polySurface189_aiStandardSurface3_0: THREE.Mesh;
+    polySurface190_aiStandardSurface3_0: THREE.Mesh;
+    ["polySurface179_Rub�_0"]: THREE.Mesh;
+    polySurface179_Diamante_0: THREE.Mesh;
+    polySurface179_aiStandardSurface3_0: THREE.Mesh;
+    polySurface181_aiStandardSurface3_0: THREE.Mesh;
+    polySurface181_Diamante_0: THREE.Mesh;
+    ["polySurface181_Rub�_0"]: THREE.Mesh;
+    polySurface198_Default_Material_0: THREE.Mesh;
+    pCube93_Cajas_0: THREE.Mesh;
+    pCube94_Cajas_0: THREE.Mesh;
+    pCube95_Cajas_0: THREE.Mesh;
+    pCylinder50_Troncos_0: THREE.Mesh;
+    pSphere4_Hojas_0: THREE.Mesh;
+    pSphere5_Hojas_0: THREE.Mesh;
+    pCylinder51_Troncos_0: THREE.Mesh;
+    pSphere6_Hojas_0: THREE.Mesh;
+    pCylinder52_Troncos_0: THREE.Mesh;
+    pSphere7_Hojas_0: THREE.Mesh;
+    pSphere8_Hojas_0: THREE.Mesh;
+    pCylinder53_Pollos_0: THREE.Mesh;
+    pCylinder54_Pollos_0: THREE.Mesh;
+    pCylinder55_Pollos_0: THREE.Mesh;
+    pCylinder56_Pollos_0: THREE.Mesh;
+    pCube96_aiStandardSurface24_0: THREE.Mesh;
+    pCube97_aiStandardSurface24_0: THREE.Mesh;
+    pCube98_aiStandardSurface24_0: THREE.Mesh;
+    pCube99_aiStandardSurface24_0: THREE.Mesh;
+    polySurface201_aiStandardSurface3_0: THREE.Mesh;
+    polySurface203_Diamante_0: THREE.Mesh;
+    polySurface204_Diamante_0: THREE.Mesh;
+    pCylinder57_Esmeralda_0: THREE.Mesh;
+    pCylinder58_Esmeralda_0: THREE.Mesh;
+    pCylinder59_Esmeralda_0: THREE.Mesh;
+    pCylinder60_Esmeralda_0: THREE.Mesh;
+    pCylinder62_Esmeralda_0: THREE.Mesh;
+    polySurface205_Esmeralda_0: THREE.Mesh;
+    polySurface206_Esmeralda_0: THREE.Mesh;
+    polySurface207_Esmeralda_0: THREE.Mesh;
+    polySurface208_Esmeralda_0: THREE.Mesh;
+    pCylinder67_Esmeralda_0: THREE.Mesh;
+    pCylinder68_Esmeralda_0: THREE.Mesh;
+    pCylinder69_Esmeralda_0: THREE.Mesh;
+    polySurface209_aiStandardSurface3_0: THREE.Mesh;
+    polySurface209_Esmeralda_0: THREE.Mesh;
+    polySurface209_Diamante_0: THREE.Mesh;
+    pCylinder75_Esmeralda_0: THREE.Mesh;
+    pCylinder79_Esmeralda_0: THREE.Mesh;
+    pCylinder84_Esmeralda_0: THREE.Mesh;
+    polySurface212_aiStandardSurface3_0: THREE.Mesh;
+    polySurface212_Esmeralda_0: THREE.Mesh;
+    polySurface212_Diamante_0: THREE.Mesh;
+    pCylinder85_Esmeralda_0: THREE.Mesh;
+    pCylinder86_Esmeralda_0: THREE.Mesh;
+    pCylinder88_Esmeralda_0: THREE.Mesh;
+    pCylinder88_Diamante_0: THREE.Mesh;
+    pCylinder88_aiStandardSurface3_0: THREE.Mesh;
+    pCylinder89_Esmeralda_0: THREE.Mesh;
+    polySurface216_Esmeralda_0: THREE.Mesh;
+    polySurface218_Roca_4_0: THREE.Mesh;
+    polySurface219_Roca_3_0: THREE.Mesh;
+    polySurface220_Roca_3_0: THREE.Mesh;
+    polySurface221_Roca_3_0: THREE.Mesh;
+    polySurface222_Roca_3_0: THREE.Mesh;
+    polySurface223_Roca_3_0: THREE.Mesh;
+    polySurface224_Roca_3_0: THREE.Mesh;
+    polySurface225_Roca_3_0: THREE.Mesh;
+    polySurface226_Roca_3_0: THREE.Mesh;
+    polySurface227_Roca_3_0: THREE.Mesh;
+    polySurface228_Roca_3_0: THREE.Mesh;
+    polySurface229_Roca_3_0: THREE.Mesh;
+    polySurface230_Roca_3_0: THREE.Mesh;
+  };
+  materials: {
+    Suelos: THREE.MeshStandardMaterial;
+    Torre: THREE.MeshStandardMaterial;
+    Techos: THREE.MeshStandardMaterial;
+    Central: THREE.MeshStandardMaterial;
+    Extras: THREE.MeshStandardMaterial;
+    Pilar: THREE.MeshStandardMaterial;
+    Diamante: THREE.MeshPhysicalMaterial;
+    Roca_3: THREE.MeshStandardMaterial;
+    material: THREE.MeshPhysicalMaterial;
+    aiStandardSurface3: THREE.MeshPhysicalMaterial;
+    Esmeralda: THREE.MeshPhysicalMaterial;
+    Derecha: THREE.MeshStandardMaterial;
+    aiMixShader3: THREE.MeshPhysicalMaterial;
+    Personaje: THREE.MeshStandardMaterial;
+    aiStandardSurface11: THREE.MeshStandardMaterial;
+    Default_Material: THREE.MeshStandardMaterial;
+    Cajas: THREE.MeshStandardMaterial;
+    Troncos: THREE.MeshStandardMaterial;
+    Hojas: THREE.MeshStandardMaterial;
+    Pollos: THREE.MeshStandardMaterial;
+    aiStandardSurface24: THREE.MeshStandardMaterial;
+    Roca_4: THREE.MeshStandardMaterial;
+  };
+};
 const Island = ({ isRotating,
     setIsRotating,
     setCurrentStage,
-    currentFocusPoint,
-    ...props }:
-    { isRotating: boolean; setIsRotating: React.Dispatch<React.SetStateAction<boolean>>; setCurrentStage: React.Dispatch<React.SetStateAction<number | null>>; currentFocusPoint: number; props:GroupProps }) => {
+     }:
+    { isRotating: boolean; setIsRotating: React.Dispatch<React.SetStateAction<boolean>>; setCurrentStage: React.Dispatch<React.SetStateAction<number | null>> }) => {
     const islandRef = useRef<THREE.Group<THREE.Object3DEventMap>>(null);
-    const islandGLTF = useGLTF("/island.glb");
-    const { nodes, materials }: { nodes: any, materials: any } = islandGLTF as any;
+    const { nodes, materials } = useGLTF("/island.glb") as GLTFResult;
     const { gl, viewport } = useThree();
     const lastX = useRef(0);
     const rotationSpeed = useRef(0);
     const dampingFactor = 0.95;
-
+    const windowSize = useWindowSize();
+    
+    const adjustIslandForScreenSize = () => {
+        let screenScale:null|Vector3 = null;
+        let screenPosition:Vector3 = [0, -6.5, -43]
+       
+        if (windowSize.width < 768) {
+            screenScale=[0.9,0.9,0.9]
+        } else {
+            screenScale=[1,1,1]
+        }
+        return [screenScale,screenPosition]
+    }
+const [islandScale,islandPosition,rotation] = adjustIslandForScreenSize()
     useEffect(() => {
         const handlePointerUp = (event: PointerEvent) => {
             event.stopPropagation();
@@ -156,7 +361,7 @@ const Island = ({ isRotating,
 
     });
     return (
-        <a.group {...props} ref={islandRef} dispose={null}>
+        <a.group ref={islandRef} dispose={null} position={islandPosition} scale={islandScale} rotation={[0.1,4.7,0]}>
             <group
                 position={[2.158, 2.09, 12.974]}
                 rotation={[-Math.PI, 0, -Math.PI]}
