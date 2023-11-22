@@ -1,6 +1,6 @@
 const Headers = () => {
     return (
-        <nav className="flex justify-between px-2">
+        <nav className="absolute top-0 z-10 flex w-full justify-between px-2">
             <a href="/">
                 <p className="text-4xl font-extrabold">IHE</p>
             </a>
@@ -11,7 +11,7 @@ const Headers = () => {
                 <a href="/portfolio">
                     <p className="text-2xl font-semibold">Portfolio</p>
                 </a>
-            </div>
+                </div>
         </nav>
     );
 };

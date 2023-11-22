@@ -1,11 +1,16 @@
 "use client"
 import Loader from "@/components/loader";
+import Birds from "@/models/birds";
 import Island from "@/models/island";
+import Sky from "@/models/sky";
 import { useWindowSize } from '@react-hookz/web/esm/useWindowSize';
 import { Canvas } from "@react-three/fiber";
-import { Suspense } from "react";
+import { Suspense, useState } from "react";
+
 
 const Home = () => {
+    const [isRotating,setIsRotating]=useState(false)
+    const [currentStage,setCurrentStage]=useState<number|null>(null)
     const windowSize = useWindowSize();
     const adjustIslandForScreenSize = () => {
         let screenScale = null;
@@ -18,11 +23,12 @@ const Home = () => {
         }
         return [screenScale,screenPosition,rotation]
     }
+   
     const [islandScale,islandPosition,rotation] = adjustIslandForScreenSize()
     return (
         <section className="relative h-screen w-full">
             <Canvas
-                className="h-screen w-full bg-transparent"
+                className={`h-screen w-full bg-transparent ${isRotating ? "cursor-grabbing":"cursor-grab"}`}
                 camera={{ near: 0.1, far: 1000 }}
             >
                 <Suspense fallback={<Loader />}>
@@ -33,7 +39,11 @@ const Home = () => {
                         intensity={1}
                         color={"#b1e1ff"}
                     />
-                    <Island position={islandPosition} scale={islandScale} rotation={rotation} />
+                    <Birds/>
+                    <Sky isRotating={isRotating} />
+                    <Island isRotating={isRotating}
+                    //@ts-ignore
+                        setIsRotating={setIsRotating} setCurrentStage={setCurrentStage} position={islandPosition} scale={islandScale} rotation={rotation} />
                 </Suspense>
             </Canvas>
         </section>
