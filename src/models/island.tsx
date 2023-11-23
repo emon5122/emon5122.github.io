@@ -5,14 +5,13 @@ License: CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
 Source: https://sketchfab.com/3d-models/isla-diorama-da5678da27c940e9aa01f3192eb49be3
 Title: Isla - Diorama
 */
-"use client"
+"use client";
 import { useWindowSize } from "@react-hookz/web/esm/useWindowSize";
 import { a } from "@react-spring/three";
 import { useGLTF } from "@react-three/drei";
 import { Vector3, useFrame, useThree } from "@react-three/fiber";
 import React, { useEffect, useRef } from "react";
 import { GLTF } from "three-stdlib";
-
 
 type GLTFResult = GLTF & {
   nodes: {
@@ -204,1070 +203,1061 @@ type GLTFResult = GLTF & {
     Roca_4: THREE.MeshStandardMaterial;
   };
 };
-const Island = ({ isRotating,
-    setIsRotating,
-    setCurrentStage,
-     }:
-    { isRotating: boolean; setIsRotating: React.Dispatch<React.SetStateAction<boolean>>; setCurrentStage: React.Dispatch<React.SetStateAction<number | null>> }) => {
-    const islandRef = useRef<THREE.Group<THREE.Object3DEventMap>>(null);
-    const { nodes, materials } = useGLTF("/island.glb") as GLTFResult;
-    const { gl, viewport } = useThree();
-    const lastX = useRef(0);
-    const rotationSpeed = useRef(0);
-    const dampingFactor = 0.95;
-    const windowSize = useWindowSize();
-    
-    const adjustIslandForScreenSize = () => {
-        let screenScale:null|Vector3 = null;
-        let screenPosition:Vector3 = [0, -6.5, -43]
-       
-        if (windowSize.width < 768) {
-            screenScale=[0.9,0.9,0.9]
-        } else {
-            screenScale=[1,1,1]
-        }
-        return [screenScale,screenPosition]
+const Island = ({
+  isRotating,
+  setIsRotating,
+  setCurrentStage,
+}: {
+  isRotating: boolean;
+  setIsRotating: React.Dispatch<React.SetStateAction<boolean>>;
+  setCurrentStage: React.Dispatch<React.SetStateAction<number | null>>;
+}) => {
+  const islandRef = useRef<THREE.Group<THREE.Object3DEventMap>>(null);
+  const { nodes, materials } = useGLTF("/island.glb") as GLTFResult;
+  const { gl, viewport } = useThree();
+  const lastX = useRef(0);
+  const rotationSpeed = useRef(0);
+  const dampingFactor = 0.95;
+  const windowSize = useWindowSize();
+
+  const adjustIslandForScreenSize = () => {
+    let screenScale: null | Vector3 = null;
+    let screenPosition: Vector3 = [0, -6.5, -43];
+
+    if (windowSize.width < 768) {
+      screenScale = [0.9, 0.9, 0.9];
+    } else {
+      screenScale = [1, 1, 1];
     }
-const [islandScale,islandPosition,rotation] = adjustIslandForScreenSize()
-    useEffect(() => {
-        const handlePointerUp = (event: PointerEvent) => {
-            event.stopPropagation();
-            event.preventDefault();
-            setIsRotating(false);
-        };
+    return [screenScale, screenPosition];
+  };
+  const [islandScale, islandPosition, rotation] = adjustIslandForScreenSize();
+  useEffect(() => {
+    const handlePointerUp = (event: PointerEvent) => {
+      event.stopPropagation();
+      event.preventDefault();
+      setIsRotating(false);
+    };
 
-        const handlePointerMove = (event: PointerEvent) => {
-            event.stopPropagation();
-            event.preventDefault();
-            if (isRotating) {
-                const clientX = event.clientX;
-                const delta = (clientX - lastX.current) / viewport.width;
-                if (islandRef.current) {
-                    islandRef.current.rotation.y += delta * 0.01 * Math.PI;
-                }
-                lastX.current = clientX;
-                rotationSpeed.current = delta * 0.01 * Math.PI;
-            }
-        };
-
-        const handleKeyDown = (event: KeyboardEvent) => {
-            if (event.key === "ArrowLeft") {
-                if (!isRotating) setIsRotating(true);
-                if (islandRef.current) {
-                    islandRef.current.rotation.y += 0.005 * Math.PI;
-                }
-                rotationSpeed.current = 0.007;
-            } else if (event.key === "ArrowRight") {
-                if (!isRotating) setIsRotating(true);
-                if (islandRef.current) {
-                    islandRef.current.rotation.y -= 0.005 * Math.PI;
-                }
-                rotationSpeed.current = -0.007;
-            }
-        };
-
-        const handleKeyUp = (event: KeyboardEvent) => {
-            if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
-                setIsRotating(false);
-            }
-        };
-        const handlePointerDown = (event: PointerEvent) => {
-            event.stopPropagation();
-            event.preventDefault();
-            setIsRotating(true);
-        };
-
-        const handleTouchEnd = (event: TouchEvent) => {
-            event.stopPropagation();
-            event.preventDefault();
-            setIsRotating(false);
-            const clientX = event.touches[0].clientX;
-            lastX.current = clientX;
-        };
-
-        const handleTouchMove = (event: TouchEvent) => {
-            event.stopPropagation();
-            event.preventDefault();
-            if (isRotating) {
-                const clientX = event.touches[0].clientX;
-                const delta = (clientX - lastX.current) / viewport.width;
-                if (islandRef.current) {
-                    islandRef.current.rotation.y += delta * 0.01 * Math.PI;
-                }
-                lastX.current = clientX;
-                rotationSpeed.current = delta * 0.01 * Math.PI;
-            }
-        };
-
-        const handleTouchStart = (event: TouchEvent) => {
-            event.stopPropagation();
-            event.preventDefault();
-            setIsRotating(true);
-        };
-        const canvas = gl.domElement;
-        canvas.addEventListener("pointerdown", handlePointerDown);
-        canvas.addEventListener("pointerup", handlePointerUp);
-        canvas.addEventListener("pointermove", handlePointerMove);
-        canvas.addEventListener("touchstart", handleTouchStart);
-        canvas.addEventListener("touchend", handleTouchEnd);
-        canvas.addEventListener("touchmove", handleTouchMove);
-        window.addEventListener("keydown", handleKeyDown);
-        window.addEventListener("keyup", handleKeyUp);
-
-        return () => {
-            canvas.removeEventListener("pointerdown", handlePointerDown);
-            canvas.removeEventListener("pointerup", handlePointerUp);
-            canvas.removeEventListener("pointermove", handlePointerMove);
-            canvas.removeEventListener("touchstart", handleTouchStart);
-            canvas.removeEventListener("touchend", handleTouchEnd);
-            canvas.removeEventListener("touchmove", handleTouchMove);
-            window.removeEventListener("keydown", handleKeyDown);
-            window.removeEventListener("keyup", handleKeyUp);
-        };
-    }, [gl, isRotating, setIsRotating, viewport.width]);
-
-    useFrame(() => {
+    const handlePointerMove = (event: PointerEvent) => {
+      event.stopPropagation();
+      event.preventDefault();
+      if (isRotating) {
+        const clientX = event.clientX;
+        const delta = (clientX - lastX.current) / viewport.width;
         if (islandRef.current) {
-            if (!isRotating) {
-                rotationSpeed.current *= dampingFactor;
-                if (Math.abs(rotationSpeed.current) < 0.001) {
-                    rotationSpeed.current = 0;
-                }
+          islandRef.current.rotation.y += delta * 0.01 * Math.PI;
+        }
+        lastX.current = clientX;
+        rotationSpeed.current = delta * 0.01 * Math.PI;
+      }
+    };
 
-                islandRef.current.rotation.y += rotationSpeed.current;
-            } else {
-                const rotation = islandRef.current.rotation.y;
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "ArrowLeft") {
+        if (!isRotating) setIsRotating(true);
+        if (islandRef.current) {
+          islandRef.current.rotation.y += 0.005 * Math.PI;
+        }
+        rotationSpeed.current = 0.007;
+      } else if (event.key === "ArrowRight") {
+        if (!isRotating) setIsRotating(true);
+        if (islandRef.current) {
+          islandRef.current.rotation.y -= 0.005 * Math.PI;
+        }
+        rotationSpeed.current = -0.007;
+      }
+    };
 
-                const normalizedRotation =
-                    ((rotation % (2 * Math.PI)) + 2 * Math.PI) % (2 * Math.PI);
-                  switch (true) {
-                    case normalizedRotation >= 5.45 && normalizedRotation <= 5.85:
-                      setCurrentStage(4);
-                      break;
-                    case normalizedRotation >= 0.85 && normalizedRotation <= 1.3:
-                      setCurrentStage(3);
-                      break;
-                    case normalizedRotation >= 2.4 && normalizedRotation <= 2.6:
-                      setCurrentStage(2);
-                      break;
-                    case normalizedRotation >= 4.25 && normalizedRotation <= 4.75:
-                      setCurrentStage(1);
-                      break;
-                    default:
-                      setCurrentStage(null);
-                  }
-            }
+    const handleKeyUp = (event: KeyboardEvent) => {
+      if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
+        setIsRotating(false);
+      }
+    };
+    const handlePointerDown = (event: PointerEvent) => {
+      event.stopPropagation();
+      event.preventDefault();
+      setIsRotating(true);
+    };
+
+    const handleTouchEnd = (event: TouchEvent) => {
+      event.stopPropagation();
+      event.preventDefault();
+      setIsRotating(false);
+      const clientX = event.touches[0].clientX;
+      lastX.current = clientX;
+    };
+
+    const handleTouchMove = (event: TouchEvent) => {
+      event.stopPropagation();
+      event.preventDefault();
+      if (isRotating) {
+        const clientX = event.touches[0].clientX;
+        const delta = (clientX - lastX.current) / viewport.width;
+        if (islandRef.current) {
+          islandRef.current.rotation.y += delta * 0.01 * Math.PI;
+        }
+        lastX.current = clientX;
+        rotationSpeed.current = delta * 0.01 * Math.PI;
+      }
+    };
+
+    const handleTouchStart = (event: TouchEvent) => {
+      event.stopPropagation();
+      event.preventDefault();
+      setIsRotating(true);
+    };
+    const canvas = gl.domElement;
+    canvas.addEventListener("pointerdown", handlePointerDown);
+    canvas.addEventListener("pointerup", handlePointerUp);
+    canvas.addEventListener("pointermove", handlePointerMove);
+    canvas.addEventListener("touchstart", handleTouchStart);
+    canvas.addEventListener("touchend", handleTouchEnd);
+    canvas.addEventListener("touchmove", handleTouchMove);
+    window.addEventListener("keydown", handleKeyDown);
+    window.addEventListener("keyup", handleKeyUp);
+
+    return () => {
+      canvas.removeEventListener("pointerdown", handlePointerDown);
+      canvas.removeEventListener("pointerup", handlePointerUp);
+      canvas.removeEventListener("pointermove", handlePointerMove);
+      canvas.removeEventListener("touchstart", handleTouchStart);
+      canvas.removeEventListener("touchend", handleTouchEnd);
+      canvas.removeEventListener("touchmove", handleTouchMove);
+      window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("keyup", handleKeyUp);
+    };
+  }, [gl, isRotating, setIsRotating, viewport.width]);
+
+  useFrame(() => {
+    if (islandRef.current) {
+      if (!isRotating) {
+        rotationSpeed.current *= dampingFactor;
+        if (Math.abs(rotationSpeed.current) < 0.001) {
+          rotationSpeed.current = 0;
         }
 
-    });
-    return (
-        <a.group ref={islandRef} dispose={null} position={islandPosition} scale={islandScale} rotation={[0.1,4.7,0]}>
-            <group
-                position={[2.158, 2.09, 12.974]}
-                rotation={[-Math.PI, 0, -Math.PI]}
-                scale={[1, 2.053, 1]}
-            >
-                <mesh
-                    geometry={nodes.polySurface79_Pilar_0.geometry}
-                    material={materials.Pilar}
-                />
-                <mesh
-                    geometry={nodes.polySurface80_Pilar_0.geometry}
-                    material={materials.Pilar}
-                    position={[0, 0, 3.207]}
-                />
-                <mesh
-                    geometry={nodes.polySurface81_Pilar_0.geometry}
-                    material={materials.Pilar}
-                    position={[4.293, 0, 3.207]}
-                    rotation={[Math.PI, 0, -Math.PI]}
-                />
-                <mesh
-                    geometry={nodes.polySurface82_Pilar_0.geometry}
-                    material={materials.Pilar}
-                    position={[4.293, 0, -0.086]}
-                    rotation={[Math.PI, 0, -Math.PI]}
-                />
-            </group>
-            <mesh
-                geometry={nodes.polySurface112_Diamante_0.geometry}
-                material={materials.Diamante}
-                position={[-23.137, -9.274, 8.826]}
-                rotation={[2.109, 0.585, 2.612]}
-            />
-            <mesh
-                geometry={nodes["polySurface88_Rub�_0"].geometry}
-                material={materials.material}
-                position={[-62.215, -41.583, 65.418]}
-                rotation={[2.286, -0.295, 2.334]}
-                scale={7.363}
-            />
-            <group position={[5.561, -0.759, -1.623]} scale={1.563}>
-                <mesh
-                    geometry={nodes["polySurface98_Rub�_0"].geometry}
-                    material={materials.material}
-                />
-                <mesh
-                    geometry={nodes["polySurface99_Rub�_0"].geometry}
-                    material={materials.material}
-                />
-                <mesh
-                    geometry={nodes["polySurface103_Rub�_0"].geometry}
-                    material={materials.material}
-                />
-            </group>
-            <group
-                position={[21.869, 4.521, 0.818]}
-                rotation={[-0.191, 0.273, 0.498]}
-                scale={0.711}
-            >
-                <mesh
-                    geometry={
-                        nodes.polySurface167_aiStandardSurface3_0.geometry
-                    }
-                    material={materials.aiStandardSurface3}
-                />
-                <mesh
-                    geometry={
-                        nodes.polySurface168_aiStandardSurface3_0.geometry
-                    }
-                    material={materials.aiStandardSurface3}
-                />
-                <mesh
-                    geometry={
-                        nodes.polySurface172_aiStandardSurface3_0.geometry
-                    }
-                    material={materials.aiStandardSurface3}
-                />
-            </group>
-            <group position={[15.626, -0.031, 15.403]} scale={1.023}>
-                <mesh
-                    geometry={
-                        nodes.polySurface139_aiStandardSurface3_0.geometry
-                    }
-                    material={materials.aiStandardSurface3}
-                />
-                <mesh
-                    geometry={
-                        nodes.polySurface140_aiStandardSurface3_0.geometry
-                    }
-                    material={materials.aiStandardSurface3}
-                />
-                <mesh
-                    geometry={
-                        nodes.polySurface144_aiStandardSurface3_0.geometry
-                    }
-                    material={materials.aiStandardSurface3}
-                />
-            </group>
-            <group position={[-26.076, -17.469, 11.937]} scale={2.465}>
-                <mesh
-                    geometry={nodes.polySurface75_Esmeralda_0.geometry}
-                    material={materials.Esmeralda}
-                    position={[16.223, 6.68, -1.254]}
-                    rotation={[0.273, -0.187, -2.46]}
-                    scale={0.219}
-                />
-                <mesh
-                    geometry={nodes.polySurface78_Esmeralda_0.geometry}
-                    material={materials.Esmeralda}
-                    position={[15.941, 10.133, -1.463]}
-                    rotation={[0, 0, -1.984]}
-                    scale={0.303}
-                />
-            </group>
-            <group
-                position={[-55.799, 29.022, 11.351]}
-                rotation={[0.51, -0.582, 2.364]}
-                scale={3.529}
-            >
-                <mesh
-                    geometry={
-                        nodes.polySurface201_aiStandardSurface3_0.geometry
-                    }
-                    material={materials.aiStandardSurface3}
-                    position={[-9.863, -0.649, -0.78]}
-                    rotation={[0, -0.329, 0]}
-                    scale={0.561}
-                />
-                <mesh
-                    geometry={nodes.polySurface203_Diamante_0.geometry}
-                    material={materials.Diamante}
-                    position={[-7.223, -4.408, -1.475]}
-                    rotation={[-0.061, -0.103, -0.307]}
-                    scale={[0.742, 1.103, 0.723]}
-                />
-                <mesh
-                    geometry={nodes.polySurface204_Diamante_0.geometry}
-                    material={materials.Diamante}
-                    position={[-22.561, -8.918, -9.471]}
-                    rotation={[-2.91, -0.558, 2.175]}
-                    scale={[0.758, 1.48, 0.758]}
-                />
-            </group>
-            <group position={[0, 1.935, 1.446]} rotation={[0.271, 0, 0]}>
-                <mesh
-                    geometry={nodes.polySurface205_Esmeralda_0.geometry}
-                    material={materials.Esmeralda}
-                />
-                <mesh
-                    geometry={nodes.polySurface206_Esmeralda_0.geometry}
-                    material={materials.Esmeralda}
-                />
-                <mesh
-                    geometry={nodes.polySurface207_Esmeralda_0.geometry}
-                    material={materials.Esmeralda}
-                />
-                <mesh
-                    geometry={nodes.polySurface208_Esmeralda_0.geometry}
-                    material={materials.Esmeralda}
-                />
-            </group>
-            <group
-                position={[-5.445, -4.388, -0.851]}
-                rotation={[-2.719, -0.892, -1.798]}
-                scale={[0.742, 0.737, 1]}
-            >
-                <mesh
-                    geometry={
-                        nodes.polySurface209_aiStandardSurface3_0.geometry
-                    }
-                    material={materials.aiStandardSurface3}
-                />
-                <mesh
-                    geometry={nodes.polySurface209_Esmeralda_0.geometry}
-                    material={materials.Esmeralda}
-                />
-                <mesh
-                    geometry={nodes.polySurface209_Diamante_0.geometry}
-                    material={materials.Diamante}
-                />
-            </group>
-            <group
-                position={[-3.545, -0.516, -0.199]}
-                rotation={[-1.824, 0.607, -2.463]}
-                scale={[0.742, 0.737, 1]}
-            >
-                <mesh
-                    geometry={
-                        nodes.polySurface212_aiStandardSurface3_0.geometry
-                    }
-                    material={materials.aiStandardSurface3}
-                />
-                <mesh
-                    geometry={nodes.polySurface212_Esmeralda_0.geometry}
-                    material={materials.Esmeralda}
-                />
-                <mesh
-                    geometry={nodes.polySurface212_Diamante_0.geometry}
-                    material={materials.Diamante}
-                />
-            </group>
-            <group
-                position={[-1.895, -5.86, -1.477]}
-                rotation={[-0.143, -1.449, 1.091]}
-                scale={0.766}
-            >
-                <mesh
-                    geometry={nodes.pCylinder88_Esmeralda_0.geometry}
-                    material={materials.Esmeralda}
-                />
-                <mesh
-                    geometry={nodes.pCylinder88_Diamante_0.geometry}
-                    material={materials.Diamante}
-                />
-                <mesh
-                    geometry={nodes.pCylinder88_aiStandardSurface3_0.geometry}
-                    material={materials.aiStandardSurface3}
-                />
-            </group>
-            <mesh
-                geometry={nodes.polySurface56_Suelos_0.geometry}
-                material={materials.Suelos}
-                scale={11.554}
-            />
-            <mesh
-                geometry={nodes.pCylinder18_Suelos_0.geometry}
-                material={materials.Suelos}
-                position={[0, 0.815, 0]}
-                scale={[17.29, 0.277, 17.29]}
-            />
-            <mesh
-                geometry={nodes.pCylinder19_Torre_0.geometry}
-                material={materials.Torre}
-                position={[0, -9.07, -0.074]}
-                scale={[0.901, 1.682, 0.901]}
-            />
-            <mesh
-                geometry={nodes.pCube19_Techos_0.geometry}
-                material={materials.Techos}
-                position={[0, 4.197, 5.299]}
-                scale={[5.589, 0.607, 1.611]}
-            />
-            <mesh
-                geometry={nodes.pCube20_Techos_0.geometry}
-                material={materials.Techos}
-                position={[0, 7.386, 5.251]}
-                scale={[5.589, 0.607, 1.611]}
-            />
-            <mesh
-                geometry={nodes.pCube22_Techos_0.geometry}
-                material={materials.Techos}
-                position={[0.055, 19.659, -4.318]}
-                scale={[1.625, 0.087, 1.094]}
-            />
-            <mesh
-                geometry={nodes.pCube26_Central_0.geometry}
-                material={materials.Central}
-            />
-            <mesh
-                geometry={nodes.pGear7_Extras_0.geometry}
-                material={materials.Extras}
-                position={[0.114, 9.298, -4.266]}
-                scale={[2.872, 0.259, 2.872]}
-            />
-            <mesh
-                geometry={nodes.pCylinder20_Extras_0.geometry}
-                material={materials.Extras}
-                position={[-3.119, 5.75, -3.075]}
-                rotation={[Math.PI / 2, 0, -Math.PI / 2]}
-                scale={[0.311, 0.503, 0.311]}
-            />
-            <mesh
-                geometry={nodes.pGear8_Extras_0.geometry}
-                material={materials.Extras}
-                position={[-3.095, 5.716, -3.102]}
-                rotation={[Math.PI / 2, 0, -Math.PI / 2]}
-                scale={[1.336, 0.121, 1.336]}
-            />
-            <mesh
-                geometry={nodes.pGear9_Extras_0.geometry}
-                material={materials.Extras}
-                position={[-3.434, 5.785, -3.042]}
-                rotation={[Math.PI / 2, 0.003, -Math.PI / 2]}
-                scale={[0.866, 0.078, 0.866]}
-            />
-            <mesh
-                geometry={nodes.pCube31_Extras_0.geometry}
-                material={materials.Extras}
-                position={[-6.568, 0.596, -0.499]}
-                rotation={[0, 0.103, 0]}
-            />
-            <mesh
-                geometry={nodes.pCube48_Techos_0.geometry}
-                material={materials.Techos}
-                position={[1.916, 3.393, 12.958]}
-                rotation={[-Math.PI, 0, -2.904]}
-                scale={[1.566, 0.089, 1.32]}
-            />
-            <mesh
-                geometry={nodes.pCube59_Roca_3_0.geometry}
-                material={materials.Roca_3}
-                position={[10.285, 0.504, -19.969]}
-                rotation={[-1.006, 0.83, 1.268]}
-            />
-            <mesh
-                geometry={nodes["pCylinder35_Rub�_0"].geometry}
-                material={materials.material}
-                position={[15.626, -0.031, -4.394]}
-                scale={1.023}
-            />
-            <mesh
-                geometry={nodes.pCube72_aiStandardSurface3_0.geometry}
-                material={materials.aiStandardSurface3}
-            />
-            <mesh
-                geometry={nodes.pCube79_Extras_0.geometry}
-                material={materials.Extras}
-                position={[-6.769, 8.599, -6.166]}
-                rotation={[0, 0.053, 0]}
-            />
-            <mesh
-                geometry={nodes.pCube80_Extras_0.geometry}
-                material={materials.Extras}
-                position={[-6.769, 8.599, -4.835]}
-                rotation={[0, 0.053, 0]}
-            />
-            <mesh
-                geometry={nodes.pCube81_Extras_0.geometry}
-                material={materials.Extras}
-                position={[-3.98, 0, 1.054]}
-                rotation={[0, 1.08, 0]}
-            />
-            <mesh
-                geometry={nodes.pCylinder42_Esmeralda_0.geometry}
-                material={materials.Esmeralda}
-                position={[1.663, -9.996, -4.908]}
-                rotation={[0.285, 0.06, 0.198]}
-                scale={[2.095, 8.112, 2.095]}
-            />
-            <mesh
-                geometry={nodes.pCylinder43_Esmeralda_0.geometry}
-                material={materials.Esmeralda}
-                position={[0.442, -6.743, -7.438]}
-                rotation={[0.915, 0.284, -0.108]}
-                scale={[1.251, 4.352, 1.251]}
-            />
-            <mesh
-                geometry={nodes.pCube82_Esmeralda_0.geometry}
-                material={materials.Esmeralda}
-                position={[9.382, 13.614, 17.239]}
-                rotation={[0, 0.402, 0]}
-                scale={1.953}
-            />
-            <mesh
-                geometry={nodes.pGear10_Extras_0.geometry}
-                material={materials.Extras}
-                position={[-3.095, 5.716, 0.257]}
-                rotation={[Math.PI / 2, 0, -Math.PI / 2]}
-                scale={[1.336, 0.121, 1.336]}
-            />
-            <mesh
-                geometry={nodes.pGear11_Extras_0.geometry}
-                material={materials.Extras}
-                position={[-3.434, 5.785, 0.316]}
-                rotation={[Math.PI / 2, 0.003, -Math.PI / 2]}
-                scale={[0.866, 0.078, 0.866]}
-            />
-            <mesh
-                geometry={nodes.pCylinder45_Extras_0.geometry}
-                material={materials.Extras}
-                position={[-3.119, 5.75, 0.283]}
-                rotation={[Math.PI / 2, 0, -Math.PI / 2]}
-                scale={[0.311, 0.503, 0.311]}
-            />
-            <mesh
-                geometry={nodes.pCylinder46_Extras_0.geometry}
-                material={materials.Extras}
-                position={[-3.119, 5.75, 3.656]}
-                rotation={[Math.PI / 2, 0, -Math.PI / 2]}
-                scale={[0.311, 0.503, 0.311]}
-            />
-            <mesh
-                geometry={nodes.pGear12_Extras_0.geometry}
-                material={materials.Extras}
-                position={[-3.434, 5.785, 3.689]}
-                rotation={[Math.PI / 2, 0.003, -Math.PI / 2]}
-                scale={[0.866, 0.078, 0.866]}
-            />
-            <mesh
-                geometry={nodes.pGear13_Extras_0.geometry}
-                material={materials.Extras}
-                position={[-3.095, 5.716, 3.63]}
-                rotation={[Math.PI / 2, 0, -Math.PI / 2]}
-                scale={[1.336, 0.121, 1.336]}
-            />
-            <mesh
-                geometry={nodes.pCylinder47_Derecha_0.geometry}
-                material={materials.Derecha}
-                position={[9.26, 2.477, -2.47]}
-                rotation={[Math.PI / 2, 0, -Math.PI / 2]}
-                scale={2.07}
-            />
-            <mesh
-                geometry={nodes.pCube84_aiMixShader3_0.geometry}
-                material={materials.aiMixShader3}
-                position={[-12.258, 0.733, 0]}
-                scale={[2.765, 1.535, 2.765]}
-            />
-            <mesh
-                geometry={nodes.pCube85_Extras_0.geometry}
-                material={materials.Extras}
-                position={[-1.602, -8.129, -0.997]}
-                rotation={[-0.073, 0.101, 1.596]}
-            />
-            <mesh
-                geometry={nodes.pCube86_Extras_0.geometry}
-                material={materials.Extras}
-                position={[-1.602, -8.129, -6.123]}
-                rotation={[-0.073, 0.101, 1.596]}
-            />
-            <mesh
-                geometry={nodes.pCube88_Techos_0.geometry}
-                material={materials.Techos}
-                position={[1.916, 3.393, 9.768]}
-                rotation={[-Math.PI, 0, -2.904]}
-                scale={[1.566, 0.089, 1.32]}
-            />
-            <mesh
-                geometry={nodes.pCube89_Techos_0.geometry}
-                material={materials.Techos}
-                position={[-1.949, 3.393, 9.768]}
-                rotation={[-Math.PI, 0, 2.904]}
-                scale={[1.566, 0.089, 1.32]}
-            />
-            <mesh
-                geometry={nodes.pCube90_Techos_0.geometry}
-                material={materials.Techos}
-                position={[-1.949, 3.393, 13.061]}
-                rotation={[-Math.PI, 0, 2.904]}
-                scale={[1.566, 0.089, 1.32]}
-            />
-            <mesh
-                geometry={nodes.pSphere3_Personaje_0.geometry}
-                material={materials.Personaje}
-            />
-            <mesh
-                geometry={nodes.pCylinder48_aiStandardSurface11_0.geometry}
-                material={materials.aiStandardSurface11}
-                position={[0.675, 1.388, 7.155]}
-                scale={0.294}
-            />
-            <mesh
-                geometry={nodes.pCylinder49_aiStandardSurface11_0.geometry}
-                material={materials.aiStandardSurface11}
-                position={[0.405, 3.042, 6.791]}
-                scale={0.294}
-            />
-            <mesh
-                geometry={nodes.pCube92_Techos_0.geometry}
-                material={materials.Techos}
-                position={[7.007, 6.416, -2.471]}
-                rotation={[0, 0, -0.123]}
-                scale={[10.048, 0.18, 1]}
-            />
-            <mesh
-                geometry={nodes.polySurface87_aiStandardSurface3_0.geometry}
-                material={materials.aiStandardSurface3}
-            />
-            <mesh
-                geometry={nodes.polySurface87_Diamante_0.geometry}
-                material={materials.Diamante}
-            />
-            <mesh
-                geometry={nodes["polySurface87_Rub�_0"].geometry}
-                material={materials.material}
-            />
-            <mesh
-                geometry={nodes.polySurface90_Diamante_0.geometry}
-                material={materials.Diamante}
-            />
-            <mesh
-                geometry={nodes["polySurface90_Rub�_0"].geometry}
-                material={materials.material}
-            />
-            <mesh
-                geometry={nodes.polySurface90_aiStandardSurface3_0.geometry}
-                material={materials.aiStandardSurface3}
-            />
-            <mesh
-                geometry={nodes.polySurface100_Diamante_0.geometry}
-                material={materials.Diamante}
-            />
-            <mesh
-                geometry={nodes["polySurface100_Rub�_0"].geometry}
-                material={materials.material}
-            />
-            <mesh
-                geometry={nodes.polySurface107_aiStandardSurface3_0.geometry}
-                material={materials.aiStandardSurface3}
-            />
-            <mesh
-                geometry={nodes.polySurface107_Diamante_0.geometry}
-                material={materials.Diamante}
-            />
-            <mesh
-                geometry={nodes.polySurface113_Diamante_0.geometry}
-                material={materials.Diamante}
-            />
-            <mesh
-                geometry={nodes["polySurface113_Rub�_0"].geometry}
-                material={materials.material}
-            />
-            <mesh
-                geometry={nodes.polySurface117_aiStandardSurface3_0.geometry}
-                material={materials.aiStandardSurface3}
-            />
-            <mesh
-                geometry={nodes.polySurface117_Diamante_0.geometry}
-                material={materials.Diamante}
-            />
-            <mesh
-                geometry={nodes["polySurface124_Rub�_0"].geometry}
-                material={materials.material}
-            />
-            <mesh
-                geometry={nodes.polySurface124_aiStandardSurface3_0.geometry}
-                material={materials.aiStandardSurface3}
-            />
-            <mesh
-                geometry={nodes["polySurface131_Rub�_0"].geometry}
-                material={materials.material}
-            />
-            <mesh
-                geometry={nodes.polySurface131_Diamante_0.geometry}
-                material={materials.Diamante}
-            />
-            <mesh
-                geometry={nodes["polySurface134_Rub�_0"].geometry}
-                material={materials.material}
-            />
-            <mesh
-                geometry={nodes.polySurface134_Diamante_0.geometry}
-                material={materials.Diamante}
-            />
-            <mesh
-                geometry={nodes["polySurface142_Rub�_0"].geometry}
-                material={materials.material}
-            />
-            <mesh
-                geometry={nodes.polySurface142_Diamante_0.geometry}
-                material={materials.Diamante}
-            />
-            <mesh
-                geometry={nodes.polySurface142_aiStandardSurface3_0.geometry}
-                material={materials.aiStandardSurface3}
-            />
-            <mesh
-                geometry={nodes.polySurface148_aiStandardSurface3_0.geometry}
-                material={materials.aiStandardSurface3}
-            />
-            <mesh
-                geometry={nodes["polySurface148_Rub�_0"].geometry}
-                material={materials.material}
-            />
-            <mesh
-                geometry={nodes["polySurface154_Rub�_0"].geometry}
-                material={materials.material}
-            />
-            <mesh
-                geometry={nodes.polySurface154_Diamante_0.geometry}
-                material={materials.Diamante}
-            />
-            <mesh
-                geometry={nodes.polySurface161_Diamante_0.geometry}
-                material={materials.Diamante}
-            />
-            <mesh
-                geometry={nodes.polySurface161_aiStandardSurface3_0.geometry}
-                material={materials.aiStandardSurface3}
-            />
-            <mesh
-                geometry={nodes.polySurface184_aiStandardSurface3_0.geometry}
-                material={materials.aiStandardSurface3}
-            />
-            <mesh
-                geometry={nodes.polySurface185_aiStandardSurface3_0.geometry}
-                material={materials.aiStandardSurface3}
-            />
-            <mesh
-                geometry={nodes["polySurface186_Rub�_0"].geometry}
-                material={materials.material}
-            />
-            <mesh
-                geometry={nodes["polySurface187_Rub�_0"].geometry}
-                material={materials.material}
-            />
-            <mesh
-                geometry={nodes["polySurface188_Rub�_0"].geometry}
-                material={materials.material}
-            />
-            <mesh
-                geometry={nodes.polySurface189_aiStandardSurface3_0.geometry}
-                material={materials.aiStandardSurface3}
-            />
-            <mesh
-                geometry={nodes.polySurface190_aiStandardSurface3_0.geometry}
-                material={materials.aiStandardSurface3}
-            />
-            <mesh
-                geometry={nodes["polySurface179_Rub�_0"].geometry}
-                material={materials.material}
-            />
-            <mesh
-                geometry={nodes.polySurface179_Diamante_0.geometry}
-                material={materials.Diamante}
-            />
-            <mesh
-                geometry={nodes.polySurface179_aiStandardSurface3_0.geometry}
-                material={materials.aiStandardSurface3}
-            />
-            <mesh
-                geometry={nodes.polySurface181_aiStandardSurface3_0.geometry}
-                material={materials.aiStandardSurface3}
-            />
-            <mesh
-                geometry={nodes.polySurface181_Diamante_0.geometry}
-                material={materials.Diamante}
-            />
-            <mesh
-                geometry={nodes["polySurface181_Rub�_0"].geometry}
-                material={materials.material}
-            />
-            <mesh
-                geometry={nodes.polySurface198_Default_Material_0.geometry}
-                material={materials.Default_Material}
-            />
-            <mesh
-                geometry={nodes.pCube93_Cajas_0.geometry}
-                material={materials.Cajas}
-                position={[4.378, 1.608, 1.442]}
-            />
-            <mesh
-                geometry={nodes.pCube94_Cajas_0.geometry}
-                material={materials.Cajas}
-                position={[5.479, 1.608, 0.981]}
-                rotation={[0, 0.314, 0]}
-            />
-            <mesh
-                geometry={nodes.pCube95_Cajas_0.geometry}
-                material={materials.Cajas}
-                position={[4.885, 2.607, 1.193]}
-                rotation={[0, 0.627, 0]}
-            />
-            <mesh
-                geometry={nodes.pCylinder50_Troncos_0.geometry}
-                material={materials.Troncos}
-                position={[7.482, 2.305, 5.53]}
-                scale={[0.181, 1.205, 0.181]}
-            />
-            <mesh
-                geometry={nodes.pSphere4_Hojas_0.geometry}
-                material={materials.Hojas}
-                position={[6.81, 3.973, 5.339]}
-                rotation={[0.003, -0.104, 0.024]}
-                scale={[0.646, 0.431, 0.646]}
-            />
-            <mesh
-                geometry={nodes.pSphere5_Hojas_0.geometry}
-                material={materials.Hojas}
-                position={[2.465, -1.974, -11.92]}
-                rotation={[0, -0.821, 0]}
-                scale={[1.927, 1.349, 1.349]}
-            />
-            <mesh
-                geometry={nodes.pCylinder51_Troncos_0.geometry}
-                material={materials.Troncos}
-                position={[-1.866, 3.693, -13.296]}
-                scale={[0.286, 2.598, 0.286]}
-            />
-            <mesh
-                geometry={nodes.pSphere6_Hojas_0.geometry}
-                material={materials.Hojas}
-                position={[-1.714, 7.209, -13.18]}
-            />
-            <mesh
-                geometry={nodes.pCylinder52_Troncos_0.geometry}
-                material={materials.Troncos}
-                position={[-10.815, 1.861, -6.506]}
-                scale={[0.265, 0.837, 0.265]}
-            />
-            <mesh
-                geometry={nodes.pSphere7_Hojas_0.geometry}
-                material={materials.Hojas}
-                position={[-10.85, 7.005, -8.038]}
-                rotation={[-0.575, 0, 0]}
-                scale={[1, 0.753, 1.303]}
-            />
-            <mesh
-                geometry={nodes.pSphere8_Hojas_0.geometry}
-                material={materials.Hojas}
-                position={[-7.289, 5.305, -14.328]}
-                rotation={[-Math.PI, -1.555, 2.948]}
-                scale={[0.933, 0.653, 0.653]}
-            />
-            <mesh
-                geometry={nodes.pCylinder53_Pollos_0.geometry}
-                material={materials.Pollos}
-                position={[9.363, 1.754, 2.304]}
-                rotation={[1.357, 0, 0]}
-                scale={0.158}
-            />
-            <mesh
-                geometry={nodes.pCylinder54_Pollos_0.geometry}
-                material={materials.Pollos}
-                position={[-0.108, -0.182, 3.672]}
-                rotation={[0, 0.358, 0]}
-            />
-            <mesh
-                geometry={nodes.pCylinder55_Pollos_0.geometry}
-                material={materials.Pollos}
-                position={[6.056, 2.127, 9.989]}
-                rotation={[1.535, 0.191, -1.387]}
-            />
-            <mesh
-                geometry={nodes.pCylinder56_Pollos_0.geometry}
-                material={materials.Pollos}
-                position={[15.023, -0.602, 14.657]}
-                rotation={[-Math.PI, 1.077, -Math.PI]}
-                scale={1.367}
-            />
-            <mesh
-                geometry={nodes.pCube96_aiStandardSurface24_0.geometry}
-                material={materials.aiStandardSurface24}
-                position={[1.958, 0, 0]}
-            />
-            <mesh
-                geometry={nodes.pCube97_aiStandardSurface24_0.geometry}
-                material={materials.aiStandardSurface24}
-                position={[2.822, 0, -0.148]}
-                rotation={[0, 1.179, 0]}
-            />
-            <mesh
-                geometry={nodes.pCube98_aiStandardSurface24_0.geometry}
-                material={materials.aiStandardSurface24}
-                position={[4.917, 0, -2.178]}
-                rotation={[-Math.PI, 0.527, -Math.PI]}
-            />
-            <mesh
-                geometry={nodes.pCube99_aiStandardSurface24_0.geometry}
-                material={materials.aiStandardSurface24}
-                position={[3.978, 0, -5.276]}
-                rotation={[-Math.PI, -0.673, -Math.PI]}
-            />
-            <mesh
-                geometry={nodes.pCylinder57_Esmeralda_0.geometry}
-                material={materials.Esmeralda}
-                position={[-9.605, -8.487, -3.966]}
-                rotation={[2.661, 0.697, -2.454]}
-                scale={[0.538, 2.101, 0.484]}
-            />
-            <mesh
-                geometry={nodes.pCylinder58_Esmeralda_0.geometry}
-                material={materials.Esmeralda}
-                position={[-9.805, -3.653, 6.414]}
-                rotation={[-1.985, -0.616, -0.881]}
-                scale={[0.193, 0.913, 0.193]}
-            />
-            <mesh
-                geometry={nodes.pCylinder59_Esmeralda_0.geometry}
-                material={materials.Esmeralda}
-                position={[-10.551, -3.188, 6.357]}
-                rotation={[-1.177, 0.49, -1.059]}
-                scale={[0.379, 0.902, 0.379]}
-            />
-            <mesh
-                geometry={nodes.pCylinder60_Esmeralda_0.geometry}
-                material={materials.Esmeralda}
-                position={[-9.742, -3.892, 5.743]}
-                rotation={[-0.679, 0.182, -1.18]}
-                scale={[0.379, 1.071, 0.379]}
-            />
-            <mesh
-                geometry={nodes.pCylinder62_Esmeralda_0.geometry}
-                material={materials.Esmeralda}
-                position={[2.245, -5.302, -5.955]}
-                rotation={[2.394, -0.94, 1.46]}
-                scale={[1.251, 3.329, 1.251]}
-            />
-            <mesh
-                geometry={nodes.pCylinder67_Esmeralda_0.geometry}
-                material={materials.Esmeralda}
-                position={[-5.931, -13.777, -6.192]}
-                rotation={[0.544, 0.304, 0]}
-                scale={[0.358, 1.487, 0.358]}
-            />
-            <mesh
-                geometry={nodes.pCylinder68_Esmeralda_0.geometry}
-                material={materials.Esmeralda}
-                position={[-5.738, -14.328, -4.908]}
-                rotation={[-0.064, -0.012, 0.206]}
-                scale={[0.53, 2.134, 0.53]}
-            />
-            <mesh
-                geometry={nodes.pCylinder69_Esmeralda_0.geometry}
-                material={materials.Esmeralda}
-                position={[-5.425, -13.005, -5.056]}
-                rotation={[1.878, -1.362, 1.133]}
-                scale={[0.362, 1.867, 0.362]}
-            />
-            <mesh
-                geometry={nodes.pCylinder75_Esmeralda_0.geometry}
-                material={materials.Esmeralda}
-                position={[-4.127, 7.38, 2.703]}
-                rotation={[0.089, -0.716, 0.062]}
-            />
-            <mesh
-                geometry={nodes.pCylinder79_Esmeralda_0.geometry}
-                material={materials.Esmeralda}
-                position={[-2.199, -6.96, -7.148]}
-                rotation={[0.863, -0.883, 0.887]}
-                scale={0.692}
-            />
-            <mesh
-                geometry={nodes.pCylinder84_Esmeralda_0.geometry}
-                material={materials.Esmeralda}
-                position={[11.084, -13.198, 8.765]}
-                rotation={[0.436, 1.304, 1.172]}
-            />
-            <mesh
-                geometry={nodes.pCylinder85_Esmeralda_0.geometry}
-                material={materials.Esmeralda}
-                position={[-5.292, 3.044, 5.552]}
-                rotation={[0.377, -0.076, 0.443]}
-            />
-            <mesh
-                geometry={nodes.pCylinder86_Esmeralda_0.geometry}
-                material={materials.Esmeralda}
-                position={[-14.333, 2.875, 11.398]}
-                rotation={[-0.427, 0.417, 0.274]}
-            />
-            <mesh
-                geometry={nodes.pCylinder89_Esmeralda_0.geometry}
-                material={materials.Esmeralda}
-                position={[18.729, -12.224, -2.563]}
-                rotation={[-2.742, 0.959, -1.802]}
-            />
-            <mesh
-                geometry={nodes.polySurface216_Esmeralda_0.geometry}
-                material={materials.Esmeralda}
-                position={[2.143, 0.617, -1.43]}
-                rotation={[1.655, -0.045, 1.878]}
-            />
-            <mesh
-                geometry={nodes.polySurface218_Roca_4_0.geometry}
-                material={materials.Roca_4}
-            />
-            <mesh
-                geometry={nodes.polySurface219_Roca_3_0.geometry}
-                material={materials.Roca_3}
-            />
-            <mesh
-                geometry={nodes.polySurface220_Roca_3_0.geometry}
-                material={materials.Roca_3}
-            />
-            <mesh
-                geometry={nodes.polySurface221_Roca_3_0.geometry}
-                material={materials.Roca_3}
-            />
-            <mesh
-                geometry={nodes.polySurface222_Roca_3_0.geometry}
-                material={materials.Roca_3}
-            />
-            <mesh
-                geometry={nodes.polySurface223_Roca_3_0.geometry}
-                material={materials.Roca_3}
-            />
-            <mesh
-                geometry={nodes.polySurface224_Roca_3_0.geometry}
-                material={materials.Roca_3}
-            />
-            <mesh
-                geometry={nodes.polySurface225_Roca_3_0.geometry}
-                material={materials.Roca_3}
-            />
-            <mesh
-                geometry={nodes.polySurface226_Roca_3_0.geometry}
-                material={materials.Roca_3}
-            />
-            <mesh
-                geometry={nodes.polySurface227_Roca_3_0.geometry}
-                material={materials.Roca_3}
-            />
-            <mesh
-                geometry={nodes.polySurface228_Roca_3_0.geometry}
-                material={materials.Roca_3}
-            />
-            <mesh
-                geometry={nodes.polySurface229_Roca_3_0.geometry}
-                material={materials.Roca_3}
-            />
-            <mesh
-                geometry={nodes.polySurface230_Roca_3_0.geometry}
-                material={materials.Roca_3}
-            />
-        </a.group>
-    );
+        islandRef.current.rotation.y += rotationSpeed.current;
+      } else {
+        const rotation = islandRef.current.rotation.y;
+
+        const normalizedRotation =
+          ((rotation % (2 * Math.PI)) + 2 * Math.PI) % (2 * Math.PI);
+        switch (true) {
+          case normalizedRotation >= 5.45 && normalizedRotation <= 5.85:
+            setCurrentStage(4);
+            break;
+          case normalizedRotation >= 0.85 && normalizedRotation <= 1.3:
+            setCurrentStage(3);
+            break;
+          case normalizedRotation >= 2.4 && normalizedRotation <= 2.6:
+            setCurrentStage(2);
+            break;
+          case normalizedRotation >= 4.25 && normalizedRotation <= 4.75:
+            setCurrentStage(1);
+            break;
+          default:
+            setCurrentStage(null);
+        }
+      }
+    }
+  });
+  return (
+    <a.group
+      ref={islandRef}
+      dispose={null}
+      position={islandPosition}
+      scale={islandScale}
+      rotation={[0.1, 4.7, 0]}
+    >
+      <group
+        position={[2.158, 2.09, 12.974]}
+        rotation={[-Math.PI, 0, -Math.PI]}
+        scale={[1, 2.053, 1]}
+      >
+        <mesh
+          geometry={nodes.polySurface79_Pilar_0.geometry}
+          material={materials.Pilar}
+        />
+        <mesh
+          geometry={nodes.polySurface80_Pilar_0.geometry}
+          material={materials.Pilar}
+          position={[0, 0, 3.207]}
+        />
+        <mesh
+          geometry={nodes.polySurface81_Pilar_0.geometry}
+          material={materials.Pilar}
+          position={[4.293, 0, 3.207]}
+          rotation={[Math.PI, 0, -Math.PI]}
+        />
+        <mesh
+          geometry={nodes.polySurface82_Pilar_0.geometry}
+          material={materials.Pilar}
+          position={[4.293, 0, -0.086]}
+          rotation={[Math.PI, 0, -Math.PI]}
+        />
+      </group>
+      <mesh
+        geometry={nodes.polySurface112_Diamante_0.geometry}
+        material={materials.Diamante}
+        position={[-23.137, -9.274, 8.826]}
+        rotation={[2.109, 0.585, 2.612]}
+      />
+      <mesh
+        geometry={nodes["polySurface88_Rub�_0"].geometry}
+        material={materials.material}
+        position={[-62.215, -41.583, 65.418]}
+        rotation={[2.286, -0.295, 2.334]}
+        scale={7.363}
+      />
+      <group position={[5.561, -0.759, -1.623]} scale={1.563}>
+        <mesh
+          geometry={nodes["polySurface98_Rub�_0"].geometry}
+          material={materials.material}
+        />
+        <mesh
+          geometry={nodes["polySurface99_Rub�_0"].geometry}
+          material={materials.material}
+        />
+        <mesh
+          geometry={nodes["polySurface103_Rub�_0"].geometry}
+          material={materials.material}
+        />
+      </group>
+      <group
+        position={[21.869, 4.521, 0.818]}
+        rotation={[-0.191, 0.273, 0.498]}
+        scale={0.711}
+      >
+        <mesh
+          geometry={nodes.polySurface167_aiStandardSurface3_0.geometry}
+          material={materials.aiStandardSurface3}
+        />
+        <mesh
+          geometry={nodes.polySurface168_aiStandardSurface3_0.geometry}
+          material={materials.aiStandardSurface3}
+        />
+        <mesh
+          geometry={nodes.polySurface172_aiStandardSurface3_0.geometry}
+          material={materials.aiStandardSurface3}
+        />
+      </group>
+      <group position={[15.626, -0.031, 15.403]} scale={1.023}>
+        <mesh
+          geometry={nodes.polySurface139_aiStandardSurface3_0.geometry}
+          material={materials.aiStandardSurface3}
+        />
+        <mesh
+          geometry={nodes.polySurface140_aiStandardSurface3_0.geometry}
+          material={materials.aiStandardSurface3}
+        />
+        <mesh
+          geometry={nodes.polySurface144_aiStandardSurface3_0.geometry}
+          material={materials.aiStandardSurface3}
+        />
+      </group>
+      <group position={[-26.076, -17.469, 11.937]} scale={2.465}>
+        <mesh
+          geometry={nodes.polySurface75_Esmeralda_0.geometry}
+          material={materials.Esmeralda}
+          position={[16.223, 6.68, -1.254]}
+          rotation={[0.273, -0.187, -2.46]}
+          scale={0.219}
+        />
+        <mesh
+          geometry={nodes.polySurface78_Esmeralda_0.geometry}
+          material={materials.Esmeralda}
+          position={[15.941, 10.133, -1.463]}
+          rotation={[0, 0, -1.984]}
+          scale={0.303}
+        />
+      </group>
+      <group
+        position={[-55.799, 29.022, 11.351]}
+        rotation={[0.51, -0.582, 2.364]}
+        scale={3.529}
+      >
+        <mesh
+          geometry={nodes.polySurface201_aiStandardSurface3_0.geometry}
+          material={materials.aiStandardSurface3}
+          position={[-9.863, -0.649, -0.78]}
+          rotation={[0, -0.329, 0]}
+          scale={0.561}
+        />
+        <mesh
+          geometry={nodes.polySurface203_Diamante_0.geometry}
+          material={materials.Diamante}
+          position={[-7.223, -4.408, -1.475]}
+          rotation={[-0.061, -0.103, -0.307]}
+          scale={[0.742, 1.103, 0.723]}
+        />
+        <mesh
+          geometry={nodes.polySurface204_Diamante_0.geometry}
+          material={materials.Diamante}
+          position={[-22.561, -8.918, -9.471]}
+          rotation={[-2.91, -0.558, 2.175]}
+          scale={[0.758, 1.48, 0.758]}
+        />
+      </group>
+      <group position={[0, 1.935, 1.446]} rotation={[0.271, 0, 0]}>
+        <mesh
+          geometry={nodes.polySurface205_Esmeralda_0.geometry}
+          material={materials.Esmeralda}
+        />
+        <mesh
+          geometry={nodes.polySurface206_Esmeralda_0.geometry}
+          material={materials.Esmeralda}
+        />
+        <mesh
+          geometry={nodes.polySurface207_Esmeralda_0.geometry}
+          material={materials.Esmeralda}
+        />
+        <mesh
+          geometry={nodes.polySurface208_Esmeralda_0.geometry}
+          material={materials.Esmeralda}
+        />
+      </group>
+      <group
+        position={[-5.445, -4.388, -0.851]}
+        rotation={[-2.719, -0.892, -1.798]}
+        scale={[0.742, 0.737, 1]}
+      >
+        <mesh
+          geometry={nodes.polySurface209_aiStandardSurface3_0.geometry}
+          material={materials.aiStandardSurface3}
+        />
+        <mesh
+          geometry={nodes.polySurface209_Esmeralda_0.geometry}
+          material={materials.Esmeralda}
+        />
+        <mesh
+          geometry={nodes.polySurface209_Diamante_0.geometry}
+          material={materials.Diamante}
+        />
+      </group>
+      <group
+        position={[-3.545, -0.516, -0.199]}
+        rotation={[-1.824, 0.607, -2.463]}
+        scale={[0.742, 0.737, 1]}
+      >
+        <mesh
+          geometry={nodes.polySurface212_aiStandardSurface3_0.geometry}
+          material={materials.aiStandardSurface3}
+        />
+        <mesh
+          geometry={nodes.polySurface212_Esmeralda_0.geometry}
+          material={materials.Esmeralda}
+        />
+        <mesh
+          geometry={nodes.polySurface212_Diamante_0.geometry}
+          material={materials.Diamante}
+        />
+      </group>
+      <group
+        position={[-1.895, -5.86, -1.477]}
+        rotation={[-0.143, -1.449, 1.091]}
+        scale={0.766}
+      >
+        <mesh
+          geometry={nodes.pCylinder88_Esmeralda_0.geometry}
+          material={materials.Esmeralda}
+        />
+        <mesh
+          geometry={nodes.pCylinder88_Diamante_0.geometry}
+          material={materials.Diamante}
+        />
+        <mesh
+          geometry={nodes.pCylinder88_aiStandardSurface3_0.geometry}
+          material={materials.aiStandardSurface3}
+        />
+      </group>
+      <mesh
+        geometry={nodes.polySurface56_Suelos_0.geometry}
+        material={materials.Suelos}
+        scale={11.554}
+      />
+      <mesh
+        geometry={nodes.pCylinder18_Suelos_0.geometry}
+        material={materials.Suelos}
+        position={[0, 0.815, 0]}
+        scale={[17.29, 0.277, 17.29]}
+      />
+      <mesh
+        geometry={nodes.pCylinder19_Torre_0.geometry}
+        material={materials.Torre}
+        position={[0, -9.07, -0.074]}
+        scale={[0.901, 1.682, 0.901]}
+      />
+      <mesh
+        geometry={nodes.pCube19_Techos_0.geometry}
+        material={materials.Techos}
+        position={[0, 4.197, 5.299]}
+        scale={[5.589, 0.607, 1.611]}
+      />
+      <mesh
+        geometry={nodes.pCube20_Techos_0.geometry}
+        material={materials.Techos}
+        position={[0, 7.386, 5.251]}
+        scale={[5.589, 0.607, 1.611]}
+      />
+      <mesh
+        geometry={nodes.pCube22_Techos_0.geometry}
+        material={materials.Techos}
+        position={[0.055, 19.659, -4.318]}
+        scale={[1.625, 0.087, 1.094]}
+      />
+      <mesh
+        geometry={nodes.pCube26_Central_0.geometry}
+        material={materials.Central}
+      />
+      <mesh
+        geometry={nodes.pGear7_Extras_0.geometry}
+        material={materials.Extras}
+        position={[0.114, 9.298, -4.266]}
+        scale={[2.872, 0.259, 2.872]}
+      />
+      <mesh
+        geometry={nodes.pCylinder20_Extras_0.geometry}
+        material={materials.Extras}
+        position={[-3.119, 5.75, -3.075]}
+        rotation={[Math.PI / 2, 0, -Math.PI / 2]}
+        scale={[0.311, 0.503, 0.311]}
+      />
+      <mesh
+        geometry={nodes.pGear8_Extras_0.geometry}
+        material={materials.Extras}
+        position={[-3.095, 5.716, -3.102]}
+        rotation={[Math.PI / 2, 0, -Math.PI / 2]}
+        scale={[1.336, 0.121, 1.336]}
+      />
+      <mesh
+        geometry={nodes.pGear9_Extras_0.geometry}
+        material={materials.Extras}
+        position={[-3.434, 5.785, -3.042]}
+        rotation={[Math.PI / 2, 0.003, -Math.PI / 2]}
+        scale={[0.866, 0.078, 0.866]}
+      />
+      <mesh
+        geometry={nodes.pCube31_Extras_0.geometry}
+        material={materials.Extras}
+        position={[-6.568, 0.596, -0.499]}
+        rotation={[0, 0.103, 0]}
+      />
+      <mesh
+        geometry={nodes.pCube48_Techos_0.geometry}
+        material={materials.Techos}
+        position={[1.916, 3.393, 12.958]}
+        rotation={[-Math.PI, 0, -2.904]}
+        scale={[1.566, 0.089, 1.32]}
+      />
+      <mesh
+        geometry={nodes.pCube59_Roca_3_0.geometry}
+        material={materials.Roca_3}
+        position={[10.285, 0.504, -19.969]}
+        rotation={[-1.006, 0.83, 1.268]}
+      />
+      <mesh
+        geometry={nodes["pCylinder35_Rub�_0"].geometry}
+        material={materials.material}
+        position={[15.626, -0.031, -4.394]}
+        scale={1.023}
+      />
+      <mesh
+        geometry={nodes.pCube72_aiStandardSurface3_0.geometry}
+        material={materials.aiStandardSurface3}
+      />
+      <mesh
+        geometry={nodes.pCube79_Extras_0.geometry}
+        material={materials.Extras}
+        position={[-6.769, 8.599, -6.166]}
+        rotation={[0, 0.053, 0]}
+      />
+      <mesh
+        geometry={nodes.pCube80_Extras_0.geometry}
+        material={materials.Extras}
+        position={[-6.769, 8.599, -4.835]}
+        rotation={[0, 0.053, 0]}
+      />
+      <mesh
+        geometry={nodes.pCube81_Extras_0.geometry}
+        material={materials.Extras}
+        position={[-3.98, 0, 1.054]}
+        rotation={[0, 1.08, 0]}
+      />
+      <mesh
+        geometry={nodes.pCylinder42_Esmeralda_0.geometry}
+        material={materials.Esmeralda}
+        position={[1.663, -9.996, -4.908]}
+        rotation={[0.285, 0.06, 0.198]}
+        scale={[2.095, 8.112, 2.095]}
+      />
+      <mesh
+        geometry={nodes.pCylinder43_Esmeralda_0.geometry}
+        material={materials.Esmeralda}
+        position={[0.442, -6.743, -7.438]}
+        rotation={[0.915, 0.284, -0.108]}
+        scale={[1.251, 4.352, 1.251]}
+      />
+      <mesh
+        geometry={nodes.pCube82_Esmeralda_0.geometry}
+        material={materials.Esmeralda}
+        position={[9.382, 13.614, 17.239]}
+        rotation={[0, 0.402, 0]}
+        scale={1.953}
+      />
+      <mesh
+        geometry={nodes.pGear10_Extras_0.geometry}
+        material={materials.Extras}
+        position={[-3.095, 5.716, 0.257]}
+        rotation={[Math.PI / 2, 0, -Math.PI / 2]}
+        scale={[1.336, 0.121, 1.336]}
+      />
+      <mesh
+        geometry={nodes.pGear11_Extras_0.geometry}
+        material={materials.Extras}
+        position={[-3.434, 5.785, 0.316]}
+        rotation={[Math.PI / 2, 0.003, -Math.PI / 2]}
+        scale={[0.866, 0.078, 0.866]}
+      />
+      <mesh
+        geometry={nodes.pCylinder45_Extras_0.geometry}
+        material={materials.Extras}
+        position={[-3.119, 5.75, 0.283]}
+        rotation={[Math.PI / 2, 0, -Math.PI / 2]}
+        scale={[0.311, 0.503, 0.311]}
+      />
+      <mesh
+        geometry={nodes.pCylinder46_Extras_0.geometry}
+        material={materials.Extras}
+        position={[-3.119, 5.75, 3.656]}
+        rotation={[Math.PI / 2, 0, -Math.PI / 2]}
+        scale={[0.311, 0.503, 0.311]}
+      />
+      <mesh
+        geometry={nodes.pGear12_Extras_0.geometry}
+        material={materials.Extras}
+        position={[-3.434, 5.785, 3.689]}
+        rotation={[Math.PI / 2, 0.003, -Math.PI / 2]}
+        scale={[0.866, 0.078, 0.866]}
+      />
+      <mesh
+        geometry={nodes.pGear13_Extras_0.geometry}
+        material={materials.Extras}
+        position={[-3.095, 5.716, 3.63]}
+        rotation={[Math.PI / 2, 0, -Math.PI / 2]}
+        scale={[1.336, 0.121, 1.336]}
+      />
+      <mesh
+        geometry={nodes.pCylinder47_Derecha_0.geometry}
+        material={materials.Derecha}
+        position={[9.26, 2.477, -2.47]}
+        rotation={[Math.PI / 2, 0, -Math.PI / 2]}
+        scale={2.07}
+      />
+      <mesh
+        geometry={nodes.pCube84_aiMixShader3_0.geometry}
+        material={materials.aiMixShader3}
+        position={[-12.258, 0.733, 0]}
+        scale={[2.765, 1.535, 2.765]}
+      />
+      <mesh
+        geometry={nodes.pCube85_Extras_0.geometry}
+        material={materials.Extras}
+        position={[-1.602, -8.129, -0.997]}
+        rotation={[-0.073, 0.101, 1.596]}
+      />
+      <mesh
+        geometry={nodes.pCube86_Extras_0.geometry}
+        material={materials.Extras}
+        position={[-1.602, -8.129, -6.123]}
+        rotation={[-0.073, 0.101, 1.596]}
+      />
+      <mesh
+        geometry={nodes.pCube88_Techos_0.geometry}
+        material={materials.Techos}
+        position={[1.916, 3.393, 9.768]}
+        rotation={[-Math.PI, 0, -2.904]}
+        scale={[1.566, 0.089, 1.32]}
+      />
+      <mesh
+        geometry={nodes.pCube89_Techos_0.geometry}
+        material={materials.Techos}
+        position={[-1.949, 3.393, 9.768]}
+        rotation={[-Math.PI, 0, 2.904]}
+        scale={[1.566, 0.089, 1.32]}
+      />
+      <mesh
+        geometry={nodes.pCube90_Techos_0.geometry}
+        material={materials.Techos}
+        position={[-1.949, 3.393, 13.061]}
+        rotation={[-Math.PI, 0, 2.904]}
+        scale={[1.566, 0.089, 1.32]}
+      />
+      <mesh
+        geometry={nodes.pSphere3_Personaje_0.geometry}
+        material={materials.Personaje}
+      />
+      <mesh
+        geometry={nodes.pCylinder48_aiStandardSurface11_0.geometry}
+        material={materials.aiStandardSurface11}
+        position={[0.675, 1.388, 7.155]}
+        scale={0.294}
+      />
+      <mesh
+        geometry={nodes.pCylinder49_aiStandardSurface11_0.geometry}
+        material={materials.aiStandardSurface11}
+        position={[0.405, 3.042, 6.791]}
+        scale={0.294}
+      />
+      <mesh
+        geometry={nodes.pCube92_Techos_0.geometry}
+        material={materials.Techos}
+        position={[7.007, 6.416, -2.471]}
+        rotation={[0, 0, -0.123]}
+        scale={[10.048, 0.18, 1]}
+      />
+      <mesh
+        geometry={nodes.polySurface87_aiStandardSurface3_0.geometry}
+        material={materials.aiStandardSurface3}
+      />
+      <mesh
+        geometry={nodes.polySurface87_Diamante_0.geometry}
+        material={materials.Diamante}
+      />
+      <mesh
+        geometry={nodes["polySurface87_Rub�_0"].geometry}
+        material={materials.material}
+      />
+      <mesh
+        geometry={nodes.polySurface90_Diamante_0.geometry}
+        material={materials.Diamante}
+      />
+      <mesh
+        geometry={nodes["polySurface90_Rub�_0"].geometry}
+        material={materials.material}
+      />
+      <mesh
+        geometry={nodes.polySurface90_aiStandardSurface3_0.geometry}
+        material={materials.aiStandardSurface3}
+      />
+      <mesh
+        geometry={nodes.polySurface100_Diamante_0.geometry}
+        material={materials.Diamante}
+      />
+      <mesh
+        geometry={nodes["polySurface100_Rub�_0"].geometry}
+        material={materials.material}
+      />
+      <mesh
+        geometry={nodes.polySurface107_aiStandardSurface3_0.geometry}
+        material={materials.aiStandardSurface3}
+      />
+      <mesh
+        geometry={nodes.polySurface107_Diamante_0.geometry}
+        material={materials.Diamante}
+      />
+      <mesh
+        geometry={nodes.polySurface113_Diamante_0.geometry}
+        material={materials.Diamante}
+      />
+      <mesh
+        geometry={nodes["polySurface113_Rub�_0"].geometry}
+        material={materials.material}
+      />
+      <mesh
+        geometry={nodes.polySurface117_aiStandardSurface3_0.geometry}
+        material={materials.aiStandardSurface3}
+      />
+      <mesh
+        geometry={nodes.polySurface117_Diamante_0.geometry}
+        material={materials.Diamante}
+      />
+      <mesh
+        geometry={nodes["polySurface124_Rub�_0"].geometry}
+        material={materials.material}
+      />
+      <mesh
+        geometry={nodes.polySurface124_aiStandardSurface3_0.geometry}
+        material={materials.aiStandardSurface3}
+      />
+      <mesh
+        geometry={nodes["polySurface131_Rub�_0"].geometry}
+        material={materials.material}
+      />
+      <mesh
+        geometry={nodes.polySurface131_Diamante_0.geometry}
+        material={materials.Diamante}
+      />
+      <mesh
+        geometry={nodes["polySurface134_Rub�_0"].geometry}
+        material={materials.material}
+      />
+      <mesh
+        geometry={nodes.polySurface134_Diamante_0.geometry}
+        material={materials.Diamante}
+      />
+      <mesh
+        geometry={nodes["polySurface142_Rub�_0"].geometry}
+        material={materials.material}
+      />
+      <mesh
+        geometry={nodes.polySurface142_Diamante_0.geometry}
+        material={materials.Diamante}
+      />
+      <mesh
+        geometry={nodes.polySurface142_aiStandardSurface3_0.geometry}
+        material={materials.aiStandardSurface3}
+      />
+      <mesh
+        geometry={nodes.polySurface148_aiStandardSurface3_0.geometry}
+        material={materials.aiStandardSurface3}
+      />
+      <mesh
+        geometry={nodes["polySurface148_Rub�_0"].geometry}
+        material={materials.material}
+      />
+      <mesh
+        geometry={nodes["polySurface154_Rub�_0"].geometry}
+        material={materials.material}
+      />
+      <mesh
+        geometry={nodes.polySurface154_Diamante_0.geometry}
+        material={materials.Diamante}
+      />
+      <mesh
+        geometry={nodes.polySurface161_Diamante_0.geometry}
+        material={materials.Diamante}
+      />
+      <mesh
+        geometry={nodes.polySurface161_aiStandardSurface3_0.geometry}
+        material={materials.aiStandardSurface3}
+      />
+      <mesh
+        geometry={nodes.polySurface184_aiStandardSurface3_0.geometry}
+        material={materials.aiStandardSurface3}
+      />
+      <mesh
+        geometry={nodes.polySurface185_aiStandardSurface3_0.geometry}
+        material={materials.aiStandardSurface3}
+      />
+      <mesh
+        geometry={nodes["polySurface186_Rub�_0"].geometry}
+        material={materials.material}
+      />
+      <mesh
+        geometry={nodes["polySurface187_Rub�_0"].geometry}
+        material={materials.material}
+      />
+      <mesh
+        geometry={nodes["polySurface188_Rub�_0"].geometry}
+        material={materials.material}
+      />
+      <mesh
+        geometry={nodes.polySurface189_aiStandardSurface3_0.geometry}
+        material={materials.aiStandardSurface3}
+      />
+      <mesh
+        geometry={nodes.polySurface190_aiStandardSurface3_0.geometry}
+        material={materials.aiStandardSurface3}
+      />
+      <mesh
+        geometry={nodes["polySurface179_Rub�_0"].geometry}
+        material={materials.material}
+      />
+      <mesh
+        geometry={nodes.polySurface179_Diamante_0.geometry}
+        material={materials.Diamante}
+      />
+      <mesh
+        geometry={nodes.polySurface179_aiStandardSurface3_0.geometry}
+        material={materials.aiStandardSurface3}
+      />
+      <mesh
+        geometry={nodes.polySurface181_aiStandardSurface3_0.geometry}
+        material={materials.aiStandardSurface3}
+      />
+      <mesh
+        geometry={nodes.polySurface181_Diamante_0.geometry}
+        material={materials.Diamante}
+      />
+      <mesh
+        geometry={nodes["polySurface181_Rub�_0"].geometry}
+        material={materials.material}
+      />
+      <mesh
+        geometry={nodes.polySurface198_Default_Material_0.geometry}
+        material={materials.Default_Material}
+      />
+      <mesh
+        geometry={nodes.pCube93_Cajas_0.geometry}
+        material={materials.Cajas}
+        position={[4.378, 1.608, 1.442]}
+      />
+      <mesh
+        geometry={nodes.pCube94_Cajas_0.geometry}
+        material={materials.Cajas}
+        position={[5.479, 1.608, 0.981]}
+        rotation={[0, 0.314, 0]}
+      />
+      <mesh
+        geometry={nodes.pCube95_Cajas_0.geometry}
+        material={materials.Cajas}
+        position={[4.885, 2.607, 1.193]}
+        rotation={[0, 0.627, 0]}
+      />
+      <mesh
+        geometry={nodes.pCylinder50_Troncos_0.geometry}
+        material={materials.Troncos}
+        position={[7.482, 2.305, 5.53]}
+        scale={[0.181, 1.205, 0.181]}
+      />
+      <mesh
+        geometry={nodes.pSphere4_Hojas_0.geometry}
+        material={materials.Hojas}
+        position={[6.81, 3.973, 5.339]}
+        rotation={[0.003, -0.104, 0.024]}
+        scale={[0.646, 0.431, 0.646]}
+      />
+      <mesh
+        geometry={nodes.pSphere5_Hojas_0.geometry}
+        material={materials.Hojas}
+        position={[2.465, -1.974, -11.92]}
+        rotation={[0, -0.821, 0]}
+        scale={[1.927, 1.349, 1.349]}
+      />
+      <mesh
+        geometry={nodes.pCylinder51_Troncos_0.geometry}
+        material={materials.Troncos}
+        position={[-1.866, 3.693, -13.296]}
+        scale={[0.286, 2.598, 0.286]}
+      />
+      <mesh
+        geometry={nodes.pSphere6_Hojas_0.geometry}
+        material={materials.Hojas}
+        position={[-1.714, 7.209, -13.18]}
+      />
+      <mesh
+        geometry={nodes.pCylinder52_Troncos_0.geometry}
+        material={materials.Troncos}
+        position={[-10.815, 1.861, -6.506]}
+        scale={[0.265, 0.837, 0.265]}
+      />
+      <mesh
+        geometry={nodes.pSphere7_Hojas_0.geometry}
+        material={materials.Hojas}
+        position={[-10.85, 7.005, -8.038]}
+        rotation={[-0.575, 0, 0]}
+        scale={[1, 0.753, 1.303]}
+      />
+      <mesh
+        geometry={nodes.pSphere8_Hojas_0.geometry}
+        material={materials.Hojas}
+        position={[-7.289, 5.305, -14.328]}
+        rotation={[-Math.PI, -1.555, 2.948]}
+        scale={[0.933, 0.653, 0.653]}
+      />
+      <mesh
+        geometry={nodes.pCylinder53_Pollos_0.geometry}
+        material={materials.Pollos}
+        position={[9.363, 1.754, 2.304]}
+        rotation={[1.357, 0, 0]}
+        scale={0.158}
+      />
+      <mesh
+        geometry={nodes.pCylinder54_Pollos_0.geometry}
+        material={materials.Pollos}
+        position={[-0.108, -0.182, 3.672]}
+        rotation={[0, 0.358, 0]}
+      />
+      <mesh
+        geometry={nodes.pCylinder55_Pollos_0.geometry}
+        material={materials.Pollos}
+        position={[6.056, 2.127, 9.989]}
+        rotation={[1.535, 0.191, -1.387]}
+      />
+      <mesh
+        geometry={nodes.pCylinder56_Pollos_0.geometry}
+        material={materials.Pollos}
+        position={[15.023, -0.602, 14.657]}
+        rotation={[-Math.PI, 1.077, -Math.PI]}
+        scale={1.367}
+      />
+      <mesh
+        geometry={nodes.pCube96_aiStandardSurface24_0.geometry}
+        material={materials.aiStandardSurface24}
+        position={[1.958, 0, 0]}
+      />
+      <mesh
+        geometry={nodes.pCube97_aiStandardSurface24_0.geometry}
+        material={materials.aiStandardSurface24}
+        position={[2.822, 0, -0.148]}
+        rotation={[0, 1.179, 0]}
+      />
+      <mesh
+        geometry={nodes.pCube98_aiStandardSurface24_0.geometry}
+        material={materials.aiStandardSurface24}
+        position={[4.917, 0, -2.178]}
+        rotation={[-Math.PI, 0.527, -Math.PI]}
+      />
+      <mesh
+        geometry={nodes.pCube99_aiStandardSurface24_0.geometry}
+        material={materials.aiStandardSurface24}
+        position={[3.978, 0, -5.276]}
+        rotation={[-Math.PI, -0.673, -Math.PI]}
+      />
+      <mesh
+        geometry={nodes.pCylinder57_Esmeralda_0.geometry}
+        material={materials.Esmeralda}
+        position={[-9.605, -8.487, -3.966]}
+        rotation={[2.661, 0.697, -2.454]}
+        scale={[0.538, 2.101, 0.484]}
+      />
+      <mesh
+        geometry={nodes.pCylinder58_Esmeralda_0.geometry}
+        material={materials.Esmeralda}
+        position={[-9.805, -3.653, 6.414]}
+        rotation={[-1.985, -0.616, -0.881]}
+        scale={[0.193, 0.913, 0.193]}
+      />
+      <mesh
+        geometry={nodes.pCylinder59_Esmeralda_0.geometry}
+        material={materials.Esmeralda}
+        position={[-10.551, -3.188, 6.357]}
+        rotation={[-1.177, 0.49, -1.059]}
+        scale={[0.379, 0.902, 0.379]}
+      />
+      <mesh
+        geometry={nodes.pCylinder60_Esmeralda_0.geometry}
+        material={materials.Esmeralda}
+        position={[-9.742, -3.892, 5.743]}
+        rotation={[-0.679, 0.182, -1.18]}
+        scale={[0.379, 1.071, 0.379]}
+      />
+      <mesh
+        geometry={nodes.pCylinder62_Esmeralda_0.geometry}
+        material={materials.Esmeralda}
+        position={[2.245, -5.302, -5.955]}
+        rotation={[2.394, -0.94, 1.46]}
+        scale={[1.251, 3.329, 1.251]}
+      />
+      <mesh
+        geometry={nodes.pCylinder67_Esmeralda_0.geometry}
+        material={materials.Esmeralda}
+        position={[-5.931, -13.777, -6.192]}
+        rotation={[0.544, 0.304, 0]}
+        scale={[0.358, 1.487, 0.358]}
+      />
+      <mesh
+        geometry={nodes.pCylinder68_Esmeralda_0.geometry}
+        material={materials.Esmeralda}
+        position={[-5.738, -14.328, -4.908]}
+        rotation={[-0.064, -0.012, 0.206]}
+        scale={[0.53, 2.134, 0.53]}
+      />
+      <mesh
+        geometry={nodes.pCylinder69_Esmeralda_0.geometry}
+        material={materials.Esmeralda}
+        position={[-5.425, -13.005, -5.056]}
+        rotation={[1.878, -1.362, 1.133]}
+        scale={[0.362, 1.867, 0.362]}
+      />
+      <mesh
+        geometry={nodes.pCylinder75_Esmeralda_0.geometry}
+        material={materials.Esmeralda}
+        position={[-4.127, 7.38, 2.703]}
+        rotation={[0.089, -0.716, 0.062]}
+      />
+      <mesh
+        geometry={nodes.pCylinder79_Esmeralda_0.geometry}
+        material={materials.Esmeralda}
+        position={[-2.199, -6.96, -7.148]}
+        rotation={[0.863, -0.883, 0.887]}
+        scale={0.692}
+      />
+      <mesh
+        geometry={nodes.pCylinder84_Esmeralda_0.geometry}
+        material={materials.Esmeralda}
+        position={[11.084, -13.198, 8.765]}
+        rotation={[0.436, 1.304, 1.172]}
+      />
+      <mesh
+        geometry={nodes.pCylinder85_Esmeralda_0.geometry}
+        material={materials.Esmeralda}
+        position={[-5.292, 3.044, 5.552]}
+        rotation={[0.377, -0.076, 0.443]}
+      />
+      <mesh
+        geometry={nodes.pCylinder86_Esmeralda_0.geometry}
+        material={materials.Esmeralda}
+        position={[-14.333, 2.875, 11.398]}
+        rotation={[-0.427, 0.417, 0.274]}
+      />
+      <mesh
+        geometry={nodes.pCylinder89_Esmeralda_0.geometry}
+        material={materials.Esmeralda}
+        position={[18.729, -12.224, -2.563]}
+        rotation={[-2.742, 0.959, -1.802]}
+      />
+      <mesh
+        geometry={nodes.polySurface216_Esmeralda_0.geometry}
+        material={materials.Esmeralda}
+        position={[2.143, 0.617, -1.43]}
+        rotation={[1.655, -0.045, 1.878]}
+      />
+      <mesh
+        geometry={nodes.polySurface218_Roca_4_0.geometry}
+        material={materials.Roca_4}
+      />
+      <mesh
+        geometry={nodes.polySurface219_Roca_3_0.geometry}
+        material={materials.Roca_3}
+      />
+      <mesh
+        geometry={nodes.polySurface220_Roca_3_0.geometry}
+        material={materials.Roca_3}
+      />
+      <mesh
+        geometry={nodes.polySurface221_Roca_3_0.geometry}
+        material={materials.Roca_3}
+      />
+      <mesh
+        geometry={nodes.polySurface222_Roca_3_0.geometry}
+        material={materials.Roca_3}
+      />
+      <mesh
+        geometry={nodes.polySurface223_Roca_3_0.geometry}
+        material={materials.Roca_3}
+      />
+      <mesh
+        geometry={nodes.polySurface224_Roca_3_0.geometry}
+        material={materials.Roca_3}
+      />
+      <mesh
+        geometry={nodes.polySurface225_Roca_3_0.geometry}
+        material={materials.Roca_3}
+      />
+      <mesh
+        geometry={nodes.polySurface226_Roca_3_0.geometry}
+        material={materials.Roca_3}
+      />
+      <mesh
+        geometry={nodes.polySurface227_Roca_3_0.geometry}
+        material={materials.Roca_3}
+      />
+      <mesh
+        geometry={nodes.polySurface228_Roca_3_0.geometry}
+        material={materials.Roca_3}
+      />
+      <mesh
+        geometry={nodes.polySurface229_Roca_3_0.geometry}
+        material={materials.Roca_3}
+      />
+      <mesh
+        geometry={nodes.polySurface230_Roca_3_0.geometry}
+        material={materials.Roca_3}
+      />
+    </a.group>
+  );
 };
 
 export default Island;

@@ -6,20 +6,20 @@ import { Inter } from "next/font/google";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-    title: "Istiak Hassan Emon",
+  title: "Istiak Hassan Emon",
 };
 
 export default function RootLayout({
-    children,
+  children,
 }: {
-    children: React.ReactNode;
+  children: React.ReactNode;
 }) {
-    return (
-        <html lang="en">
-            <body className={inter.className}>
-                <Headers />
-                {children}
-            </body>
-        </html>
-    );
+  return (
+    <html lang="en">
+      <body className={inter.className}>
+        <Headers />
+        {children}
+      </body>
+    </html>
+  );
 }

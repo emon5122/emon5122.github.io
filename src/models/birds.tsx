@@ -1,27 +1,27 @@
-import { useAnimations, useGLTF } from "@react-three/drei"
-import { useFrame } from "@react-three/fiber"
-import { useEffect, useRef } from "react"
+import { useAnimations, useGLTF } from "@react-three/drei";
+import { useFrame } from "@react-three/fiber";
+import { useEffect, useRef } from "react";
 
 const Birds = () => {
-    const { scene, animations } = useGLTF("/birds.glb")
-  const birdsRef = useRef<THREE.Mesh>(null)
+  const { scene, animations } = useGLTF("/birds.glb");
+  const birdsRef = useRef<THREE.Mesh>(null);
   const { actions } = useAnimations(animations, birdsRef);
   useEffect(() => {
     if (!actions) {
-      return
+      return;
     }
     actions["Scene"]?.play();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-      useFrame(({ clock, camera }) => {
+  useFrame(({ clock, camera }) => {
     if (!birdsRef.current) {
-      return
+      return;
     }
     birdsRef.current.position.y = Math.sin(clock.elapsedTime) * 0.2 + 2;
 
     if (birdsRef.current.position.x > camera.position.x + 10) {
-          birdsRef.current.rotation.y = Math.PI;
+      birdsRef.current.rotation.y = Math.PI;
     } else if (birdsRef.current.position.x < camera.position.x - 10) {
       birdsRef.current.rotation.y = 0;
     }
@@ -35,8 +35,10 @@ const Birds = () => {
     }
   });
   return (
-      <mesh ref={ birdsRef} position={[-8, 2, 1]} scale={[0.5,0.5,0.5]}><primitive object={scene}/></mesh>
-  )
-}
+    <mesh ref={birdsRef} position={[-8, 2, 1]} scale={[0.5, 0.5, 0.5]}>
+      <primitive object={scene} />
+    </mesh>
+  );
+};
 
-export default Birds
+export default Birds;
