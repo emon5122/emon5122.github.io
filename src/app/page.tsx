@@ -8,6 +8,7 @@ import Island from "@/models/island";
 import Sky from "@/models/sky";
 import { Canvas } from "@react-three/fiber";
 import { Suspense, useState } from "react";
+import { OrbitControls } from "three-stdlib";
 
 const Home = () => {
   const [isRotating, setIsRotating] = useState(false);

@@ -1,4 +1,6 @@
 import Headers from "@/components/header";
+import { Toaster } from "@/components/ui/sonner";
+import TanstackProvider from "@/providers/reactQuery";
 import "@/styles/globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
@@ -18,7 +20,8 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <Headers />
-        {children}
+        <TanstackProvider>{children}</TanstackProvider>
+        <Toaster />
       </body>
     </html>
   );
