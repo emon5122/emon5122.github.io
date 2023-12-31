@@ -20,7 +20,7 @@ export const useChat = (
         "https://api.ihemon.me/chat/",
         data,
       );
-      return res as z.infer<typeof chat>;
+      return res as { response: string };
     },
     onMutate: (val) => {
       setChats((prev) => [...prev, { name: "me", text: val.text }]);

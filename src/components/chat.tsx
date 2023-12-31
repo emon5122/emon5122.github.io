@@ -47,7 +47,7 @@ const Chat = () => {
             setDisabled(false);
             textRef.current!.value = "";
             setChats((prev) => {
-              return [...prev, { name: "bot", text: data?.text }];
+              return [...prev, { name: "bot", text: data?.response }];
             });
           },
         },
