@@ -7,7 +7,10 @@ export const useBusiness = () => {
   return useMutation({
     mutationKey: ["useBusiness"],
     mutationFn: async (data: z.infer<typeof countrySchema>) => {
-      const { data: res } = await axios.post("https://api.ihemon.me", data);
+      const { data: res } = await axios.post(
+        "https://api.ihemon.me/business-idea-generator/",
+        data,
+      );
       return res;
     },
     onMutate: () => {

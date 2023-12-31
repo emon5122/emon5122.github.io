@@ -1,3 +1,4 @@
+import Chat from "@/components/chat";
 import Headers from "@/components/header";
 import { Toaster } from "@/components/ui/sonner";
 import TanstackProvider from "@/providers/reactQuery";
@@ -20,7 +21,10 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <Headers />
-        <TanstackProvider>{children}</TanstackProvider>
+        <TanstackProvider>
+          {children}
+          <Chat />
+        </TanstackProvider>
         <Toaster />
       </body>
     </html>
