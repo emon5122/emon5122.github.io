@@ -1,7 +1,6 @@
-import { countrySchema } from "@/validators";
+import { BusinessSchema, countrySchema } from "@/validators";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
-import { toast } from "sonner";
 import { z } from "zod";
 export const useBusiness = () => {
   return useMutation({
@@ -11,10 +10,7 @@ export const useBusiness = () => {
         "https://api.ihemon.me/business-idea-generator/",
         data,
       );
-      return res;
-    },
-    onMutate: () => {
-      return toast.loading("Loading...");
+      return BusinessSchema.parse(res);
     },
   });
 };

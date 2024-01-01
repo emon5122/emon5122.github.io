@@ -19,6 +19,7 @@ import { useBusiness } from "@/hooks/useBusiness";
 import { BusinessSchema, countrySchema } from "@/validators";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { flags } from "@nexisltd/country";
+import { useIsMutating } from "@tanstack/react-query";
 import Image from "next/image";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -29,23 +30,31 @@ const BusinessIdeaPage = () => {
   const [res, setRes] = useState<undefined | z.infer<typeof BusinessSchema>>();
   const form = useForm<z.infer<typeof countrySchema>>({
     defaultValues: {
-      country_name: "",
+      country_name: undefined,
     },
     resolver: zodResolver(countrySchema),
   });
   const businessMutation = useBusiness();
+  const isMutating = useIsMutating({ mutationKey: ["useBusiness"] });
+  if (isMutating > 0) {
+    return (
+      <main className="flex min-h-screen flex-col items-center justify-center p-24">
+        <div className="rounded bg-white p-8 shadow-md">
+          <p className="mb-4 text-xl font-bold">Generating Idea...</p>
+        </div>
+      </main>
+    );
+  }
   if (res) {
     return (
       <main className="flex min-h-screen flex-col items-center justify-center p-24">
         <div className="rounded bg-white p-8 shadow-md">
-          <p className="mb-4 text-xl font-bold">
-            {res.country_name.country_name}
-          </p>
+          <p className="mb-4 text-xl font-bold">{res.country_name}</p>
           <p className="mb-2 text-lg">Idea: {res.business_idea}</p>
           <p className="mb-2 text-lg">Analysis: {res.business_analysis}</p>
           <p className="text-lg">Financial Data: {res.financial_data}</p>
         </div>
-        <Button onClick={() => setRes(undefined)}>Retry</Button>
+        <Button onClick={() => setRes(undefined)}>Another Search</Button>
       </main>
     );
   }
@@ -55,13 +64,12 @@ const BusinessIdeaPage = () => {
         className="mt-10"
         onSubmit={form.handleSubmit((value) => {
           businessMutation.mutate(value, {
-            onSuccess: (data, _, context) => {
-              const res = BusinessSchema.parse(data);
-              setRes(res);
-              toast.success("Success", { id: context });
+            onSuccess: (data) => {
+              setRes(data);
+              toast.success("Success");
             },
-            onError: (_, __, context) => {
-              toast.error("Retry again after few seconds", { id: context });
+            onError: () => {
+              toast.error("Retry again after few seconds");
             },
           });
         })}
