@@ -4,13 +4,14 @@ import { motion } from "framer-motion";
 import {
     ArrowDown,
     ArrowRight,
-    Github,
+    FileUser,
     Linkedin,
     TerminalIcon,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
+import { TechIcon } from "./icons";
 import { Button } from "./ui/button";
 import { TypewriterEffect } from "./ui/typewriter-effect";
 
@@ -121,6 +122,18 @@ export function HeroSection() {
                             <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
                         </Link>
                     </Button>
+                    <Button
+                        className="group relative overflow-hidden px-6 h-12"
+                        asChild
+                    >
+                        <Link
+                            href="https://rxresu.me/emon5122/istiak-hassan-emon"
+                            target="_blank"
+                        >
+                            Resume
+                            <FileUser className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                        </Link>
+                    </Button>
                     <div className="flex gap-4">
                         <Button
                             variant="outline"
@@ -132,7 +145,7 @@ export function HeroSection() {
                                 href="https://github.com/emon5122"
                                 target="_blank"
                             >
-                                <Github className="h-5 w-5" />
+                                <TechIcon name={"github"} size={16} />
                             </Link>
                         </Button>
                         <Button
@@ -145,7 +158,7 @@ export function HeroSection() {
                                 href="https://www.linkedin.com/in/istiak-hassan-emon/"
                                 target="_blank"
                             >
-                                <Linkedin className="h-5 w-5" />
+                                <Linkedin className="w-5 h-5" />
                             </Link>
                         </Button>
                     </div>

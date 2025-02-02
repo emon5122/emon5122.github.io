@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { TechIcon } from "./icons";
 import { Badge } from "./ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 
@@ -8,28 +9,46 @@ const projects = [
     {
         name: "Global Business Idea Generator",
         description:
-            "A project that generates business ideas tailored for specific countries using LangChain, OpenAI, and SerpAPI to analyze market trends.",
-        tags: ["LangChain", "OpenAI", "SerpAPI", "AI"],
+            "AI-powered system that generates business ideas based on location and market trends.",
+        technologies: [
+            { name: "Python", icon: "python" },
+            { name: "OpenAI", icon: "openai" },
+            { name: "Next.js", icon: "nextjs" },
+            { name: "TypeScript", icon: "typescript" },
+        ],
     },
     {
         name: "YouTube Video Sentiment Analysis",
         description:
-            "Python and Flask-based project that analyzes sentiment of video comments using machine learning.",
-        tags: ["Python", "Flask", "Machine Learning", "NLP"],
+            "Machine learning-powered system for analyzing YouTube comment sentiments.",
+        technologies: [
+            { name: "Python", icon: "python" },
+            { name: "Flask", icon: "flask" },
+            { name: "TensorFlow", icon: "tensorflow" },
+        ],
     },
     {
         name: "QR Code Generator",
         description:
-            "Next.js app for creating customizable QR codes with color and margin options.",
+            "Advanced QR code generation system with customization options.",
         url: "https://qr.nexisltd.com",
-        tags: ["Next.js", "React", "TypeScript"],
+        technologies: [
+            { name: "Next.js", icon: "nextjs" },
+            { name: "TypeScript", icon: "typescript" },
+            { name: "Tailwind CSS", icon: "tailwindcss" },
+            { name: "Vercel", icon: "vercel" },
+        ],
     },
     {
         name: "URL Shortener",
-        description:
-            "Fast and efficient URL shortening service built with Next.js.",
+        description: "Fast and efficient URL shortening service.",
         url: "https://url.nexisltd.com",
-        tags: ["Next.js", "React", "TypeScript"],
+        technologies: [
+            { name: "Next.js", icon: "nextjs" },
+            { name: "TypeScript", icon: "typescript" },
+            { name: "MongoDB", icon: "mongodb" },
+            { name: "Vercel", icon: "vercel" },
+        ],
     },
 ];
 
@@ -75,12 +94,17 @@ export function ProjectsShowcase() {
                                         {project.description}
                                     </p>
                                     <div className="flex flex-wrap gap-2">
-                                        {project.tags.map((tag) => (
+                                        {project.technologies.map((tech) => (
                                             <Badge
-                                                key={tag}
+                                                key={tech.name}
                                                 variant="secondary"
+                                                className="flex items-center gap-1"
                                             >
-                                                {tag}
+                                                <TechIcon
+                                                    name={tech.icon}
+                                                    size={16}
+                                                />
+                                                {tech.name}
                                             </Badge>
                                         ))}
                                     </div>

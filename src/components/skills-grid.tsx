@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { TechIcon } from "./icons";
 import { Badge } from "./ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 
@@ -9,55 +10,61 @@ const skills = [
         name: "Full-Stack Development",
         level: 5,
         keywords: [
-            "React",
-            "Next.js",
-            "TypeScript",
-            "Django",
-            "Golang",
-            "Laravel",
+            { name: "React", icon: "react" },
+            { name: "Next.js", icon: "nextjs" },
+            { name: "TypeScript", icon: "typescript" },
+            { name: "Django", icon: "django" },
+            { name: "Golang", icon: "golang" },
+            { name: "Laravel", icon: "laravel" },
         ],
     },
     {
         name: "DevOps",
         level: 5,
         keywords: [
-            "Docker",
-            "Kubernetes",
-            "CI/CD",
-            "Terraform",
-            "Jenkins",
-            "Ansible",
+            { name: "Docker", icon: "docker" },
+            { name: "Kubernetes", icon: "kubernetes" },
+            { name: "Terraform", icon: "terraform" },
+            { name: "Jenkins", icon: "jenkins" },
+            { name: "Ansible", icon: "ansible" },
+            { name: "GitHub Actions", icon: "githubactions" },
         ],
     },
     {
-        name: "Networking & Cybersecurity",
-        level: 5,
-        keywords: [
-            "Penetration Testing",
-            "Bug Bounty",
-            "Kali Linux",
-            "Ethical Hacking",
-        ],
-    },
-    {
-        name: "Cloud Platforms",
+        name: "Cloud & Infrastructure",
         level: 4,
-        keywords: ["AWS", "GCP", "Azure", "Oracle", "DigitalOcean"],
+        keywords: [
+            { name: "AWS", icon: "aws" },
+            { name: "GCP", icon: "gcp" },
+            { name: "Azure", icon: "azure" },
+            { name: "Vercel", icon: "vercel" },
+        ],
     },
     {
-        name: "Machine Learning & AI",
+        name: "AI & Machine Learning",
         level: 3,
         keywords: [
-            "Machine Learning",
-            "OpenAI",
-            "LangChain",
-            "Sentiment Analysis",
+            { name: "TensorFlow", icon: "tensorflow" },
+            { name: "OpenAI", icon: "openai" },
+            { name: "Python", icon: "python" },
         ],
     },
     {
-        name: "Programming Languages",
+        name: "Databases",
         level: 5,
-        keywords: ["Python", "TypeScript", "Golang", "Rust", "Java", "C++"],
+        keywords: [
+            { name: "PostgreSQL", icon: "postgresql" },
+            { name: "MongoDB", icon: "mongodb" },
+            { name: "Redis", icon: "redis" },
+        ],
+    },
+    {
+        name: "Security",
+        level: 5,
+        keywords: [
+            { name: "Linux", icon: "linux" },
+            { name: "Kali Linux", icon: "kalilinux" },
+        ],
     },
 ];
 
@@ -102,10 +109,15 @@ export function SkillsGrid() {
                                     <div className="flex flex-wrap gap-2">
                                         {skill.keywords.map((keyword) => (
                                             <Badge
-                                                key={keyword}
+                                                key={keyword.name}
                                                 variant="secondary"
+                                                className="flex items-center gap-1"
                                             >
-                                                {keyword}
+                                                <TechIcon
+                                                    name={keyword.icon}
+                                                    size={16}
+                                                />
+                                                {keyword.name}
                                             </Badge>
                                         ))}
                                     </div>
