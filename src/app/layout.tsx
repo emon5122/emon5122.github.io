@@ -1,32 +1,33 @@
-import Chat from "@/components/chat";
-import Headers from "@/components/header";
-import { Toaster } from "@/components/ui/sonner";
-import TanstackProvider from "@/providers/reactQuery";
+import { ThemeProvider } from "@/components/theme-provider";
 import "@/styles/globals.css";
-import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import type React from "react"; // Added import for React
 
 const inter = Inter({ subsets: ["latin"] });
 
-export const metadata: Metadata = {
-  title: "Istiak Hassan Emon",
+export const metadata = {
+    title: "Istiak Hassan Emon - Full-Stack Engineer & DevOps Specialist",
+    description:
+        "Portfolio of Istiak Hassan Emon - Full-Stack Engineer, DevOps Specialist, and Ethical Hacker",
 };
 
 export default function RootLayout({
-  children,
+    children,
 }: {
-  children: React.ReactNode;
+    children: React.ReactNode;
 }) {
-  return (
-    <html lang="en">
-      <body className={inter.className}>
-        <Headers />
-        <TanstackProvider>
-          {children}
-          <Chat />
-        </TanstackProvider>
-        <Toaster />
-      </body>
-    </html>
-  );
+    return (
+        <html lang="en" suppressHydrationWarning className="scroll-smooth">
+            <body className={inter.className}>
+                <ThemeProvider
+                    attribute="class"
+                    defaultTheme="dark"
+                    enableSystem
+                    disableTransitionOnChange
+                >
+                    {children}
+                </ThemeProvider>
+            </body>
+        </html>
+    );
 }
