@@ -1,7 +1,13 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ArrowRight, Github, Linkedin, TerminalIcon } from "lucide-react";
+import {
+    ArrowDown,
+    ArrowRight,
+    Github,
+    Linkedin,
+    TerminalIcon,
+} from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
@@ -148,15 +154,19 @@ export function HeroSection() {
             <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ delay: 1 }}
-                className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
+                transition={{ delay: 2.5, duration: 0.8 }}
+                className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-primary"
             >
                 <motion.div
                     animate={{ y: [0, 10, 0] }}
-                    transition={{ repeat: Infinity, duration: 2 }}
-                    className="text-primary"
+                    transition={{
+                        repeat: Number.POSITIVE_INFINITY,
+                        duration: 2,
+                    }}
+                    className="flex flex-col items-center gap-2"
                 >
-                    ↓
+                    <span className="text-sm">Scroll to explore</span>
+                    <ArrowDown className="w-5 h-5" />
                 </motion.div>
             </motion.div>
         </div>

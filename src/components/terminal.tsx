@@ -1,7 +1,8 @@
 "use client";
 
 import { type CommandResponse, getCommandResponse } from "@/lib/terminal-data";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
+import { ChevronDown } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { Card } from "./ui/card";
 
@@ -14,6 +15,7 @@ export function Terminal() {
     const [input, setInput] = useState("");
     const [history, setHistory] = useState<TerminalLine[]>([]);
     const [historyIndex, setHistoryIndex] = useState(-1);
+    const [isVisible, setIsVisible] = useState(false);
     const terminalRef = useRef<HTMLDivElement>(null);
     const inputRef = useRef<HTMLInputElement>(null);
 
@@ -23,20 +25,24 @@ export function Terminal() {
         }
     };
 
-    useEffect(scrollToBottom, [history]);
+    useEffect(scrollToBottom, [terminalRef]);
 
     useEffect(() => {
-        // Initial welcome message
-        setHistory([
-            {
-                type: "output",
-                content: {
-                    type: "text",
-                    content: `Welcome to my interactive terminal!
+        const timer = setTimeout(() => {
+            setIsVisible(true);
+            setHistory([
+                {
+                    type: "output",
+                    content: {
+                        type: "text",
+                        content: `Welcome to my interactive terminal!
 Type 'help' to see available commands.`,
+                    },
                 },
-            },
-        ]);
+            ]);
+        }, 3500);
+
+        return () => clearTimeout(timer);
     }, []);
 
     const handleCommand = (cmd: string) => {
@@ -155,60 +161,82 @@ Type 'help' to see available commands.`,
         }
     };
 
-    return (
+    // Scroll indicator animation
+    const scrollIndicator = (
         <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5 }}
-            className="max-w-4xl mx-auto px-4 py-12"
-            onClick={() => inputRef.current?.focus()}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 2, duration: 1 }}
+            className="absolute bottom-4 left-1/2 transform -translate-x-1/2 text-terminal-text dark:text-terminal-text-dark"
         >
-            <Card className="bg-terminal dark:bg-terminal-dark p-4 font-mono text-sm">
-                <div className="flex gap-2 mb-2">
-                    <div className="w-3 h-3 rounded-full bg-red-500" />
-                    <div className="w-3 h-3 rounded-full bg-yellow-500" />
-                    <div className="w-3 h-3 rounded-full bg-green-500" />
-                </div>
-                <div
-                    ref={terminalRef}
-                    className="h-[400px] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-transparent"
+            <motion.div
+                animate={{ y: [0, 5, 0] }}
+                transition={{ repeat: Number.POSITIVE_INFINITY, duration: 2 }}
+            >
+                <ChevronDown className="w-6 h-6" />
+            </motion.div>
+        </motion.div>
+    );
+
+    return (
+        <AnimatePresence>
+            {isVisible && (
+                <motion.div
+                    initial={{ opacity: 0, y: 50 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8 }}
+                    className="max-w-4xl mx-auto px-4 py-12 relative"
+                    onClick={() => inputRef.current?.focus()}
                 >
-                    {history.map((line, i) => (
-                        <div key={i} className="mb-2">
-                            {line.type === "input" ? (
-                                <div className="flex">
-                                    <span className="text-terminal-prompt dark:text-terminal-prompt-dark">
-                                        guest@ihemon.me:~${" "}
-                                    </span>
-                                    <span className="ml-2 text-terminal-text dark:text-terminal-text-dark">
-                                        {line.content as string}
-                                    </span>
-                                </div>
-                            ) : (
-                                <div className="ml-4">
-                                    {renderOutput(
-                                        line.content as CommandResponse
+                    <Card className="bg-terminal dark:bg-terminal-dark p-4 font-mono text-sm">
+                        <div className="flex gap-2 mb-2">
+                            <div className="w-3 h-3 rounded-full bg-red-500" />
+                            <div className="w-3 h-3 rounded-full bg-yellow-500" />
+                            <div className="w-3 h-3 rounded-full bg-green-500" />
+                        </div>
+                        <div
+                            ref={terminalRef}
+                            className="h-[400px] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-transparent"
+                        >
+                            {history.map((line, i) => (
+                                <div key={i} className="mb-2">
+                                    {line.type === "input" ? (
+                                        <div className="flex">
+                                            <span className="text-terminal-prompt dark:text-terminal-prompt-dark">
+                                                guest@portfolio:~${" "}
+                                            </span>
+                                            <span className="ml-2 text-terminal-text dark:text-terminal-text-dark">
+                                                {line.content as string}
+                                            </span>
+                                        </div>
+                                    ) : (
+                                        <div className="ml-4">
+                                            {renderOutput(
+                                                line.content as CommandResponse
+                                            )}
+                                        </div>
                                     )}
                                 </div>
-                            )}
+                            ))}
+                            <form onSubmit={handleSubmit} className="flex">
+                                <span className="text-terminal-prompt dark:text-terminal-prompt-dark">
+                                    guest@portfolio:~${" "}
+                                </span>
+                                <input
+                                    ref={inputRef}
+                                    type="text"
+                                    value={input}
+                                    onChange={(e) => setInput(e.target.value)}
+                                    onKeyDown={handleKeyDown}
+                                    className="flex-1 ml-2 bg-transparent outline-none text-terminal-text dark:text-terminal-text-dark"
+                                    autoFocus
+                                />
+                            </form>
                         </div>
-                    ))}
-                    <form onSubmit={handleSubmit} className="flex">
-                        <span className="text-terminal-prompt dark:text-terminal-prompt-dark">
-                            guest@ihemon.me:~${" "}
-                        </span>
-                        <input
-                            ref={inputRef}
-                            type="text"
-                            value={input}
-                            onChange={(e) => setInput(e.target.value)}
-                            onKeyDown={handleKeyDown}
-                            className="flex-1 ml-2 bg-transparent outline-none text-terminal-text dark:text-terminal-text-dark"
-                            autoFocus
-                        />
-                    </form>
-                </div>
-            </Card>
-        </motion.div>
+                    </Card>
+                    {scrollIndicator}
+                </motion.div>
+            )}
+        </AnimatePresence>
     );
 }
