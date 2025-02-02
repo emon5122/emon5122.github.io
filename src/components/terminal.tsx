@@ -203,7 +203,7 @@ Type 'help' to see available commands.`,
                                     {line.type === "input" ? (
                                         <div className="flex">
                                             <span className="text-terminal-prompt dark:text-terminal-prompt-dark">
-                                                guest@portfolio:~${" "}
+                                                guest@ihemon.me:~${" "}
                                             </span>
                                             <span className="ml-2 text-terminal-text dark:text-terminal-text-dark">
                                                 {line.content as string}
@@ -220,7 +220,7 @@ Type 'help' to see available commands.`,
                             ))}
                             <form onSubmit={handleSubmit} className="flex">
                                 <span className="text-terminal-prompt dark:text-terminal-prompt-dark">
-                                    guest@portfolio:~${" "}
+                                    guest@ihemon.me:~${" "}
                                 </span>
                                 <input
                                     ref={inputRef}
