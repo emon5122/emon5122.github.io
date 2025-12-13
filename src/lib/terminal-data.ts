@@ -120,41 +120,57 @@ export const SKILLS_DETAILS = {
 };
 
 export const EXPERIENCE_DETAILS = {
-    nexis: {
-        title: "Lead Developer & Founder at Nexis LTD",
-        period: "September 2021 - Present",
+    trodad: {
+        title: "Team Lead, Development & Technology at TRODAD International LTD.",
+        period: "February 2025 - Present",
         description: `Key Achievements and Responsibilities:
 
     Leadership:
-    - Founded and grew the company from ground up
-    - Led technical strategy and architecture decisions
-    - Managed team of developers and projects
+    - Lead development team across multiple domains
+    - Architect enterprise systems for healthcare, e-commerce, and blockchain
+    - Manage full-stack development and infrastructure automation
+    
+    Technical Implementation:
+    - Built zero-knowledge privacy mixer on Solana
+    - Fine-tuned medical AI models for radiology
+    - Integrated DICOM networks for medical imaging
+    - Deployed IoT-enabled healthcare workflows
+    - Managed CI/CD pipelines for ERP systems
+    
+    Technologies Used:
+    - Kubernetes, Docker for containerization
+    - AI/ML integration and model fine-tuning
+    - Blockchain development (Solana, Rust)
+    - Healthcare systems (DICOM, HL7)
+    - DevOps and automation tools`,
+    },
+    nexis: {
+        title: "Lead Developer & Founder at Nexis LTD",
+        period: "September 2021 - February 2025",
+        description: `Key Achievements and Responsibilities:
+
+    Leadership:
+    - Founded and scaled engineering company from ground up
+    - Managed 44+ production microservices serving real customers
+    - Architected complete infrastructure using Terraform/Kubernetes/Ansible
+    - Maintained 99.9% uptime across all production services
     
     Projects Delivered:
-    1. Madhobimart - E-commerce Platform
-       - Implemented secure payment gateway
-       - Built inventory management system
-       - Integrated real-time delivery tracking
+    - E-commerce platforms with payment gateway integration
+    - SaaS systems (HRM, school management, digital menus)
+    - Internal tools and automation systems
+    - GitOps workflows and CI/CD pipelines
+    - Published reusable NPM packages
     
-    2. Sardarhandicrafts - Artisan Marketplace
-       - Developed vendor management system
-       - Created custom order tracking
-       - Implemented rating and review system
-    
-    3. School Management System
-       - Built attendance tracking
-       - Implemented grade management
-       - Created parent-teacher communication portal
-    
-    4. Face Recognition Attendance System
-       - Developed real-time face detection
-       - Implemented secure data storage
-       - Created administrative dashboard
+    Key Technical Achievements:
+    - Built complete microservices architecture
+    - Implemented infrastructure as code
+    - Automated deployment pipelines
     
     Technologies Used:
     - Next.js, React, TypeScript
     - Python, Django, FastAPI
-    - Docker, Kubernetes
+    - Docker, Kubernetes, Terraform
     - AWS, GCP
     - PostgreSQL, MongoDB`,
     },
@@ -273,7 +289,10 @@ export const PROJECTS_DETAILS = {
     - Bulk generation
     - Analytics tracking
     
-    Live at: https://qr.nexisltd.com`,
+    Impact:
+    - Streamlined marketing operations
+    - Enhanced tracking capabilities
+    - Improved user engagement`,
     },
     "url-shortener": {
         title: "URL Shortener",
@@ -290,7 +309,10 @@ Features:
 - Real-time analytics
 - User authentication
 
-Live at: https://url.nexisltd.com`,
+Impact:
+- Simplified link management
+- Comprehensive usage analytics
+- Enhanced brand consistency`,
     },
 };
 
@@ -488,29 +510,47 @@ English For IELTS (British Council, April 2016)
                 content: `Technical Skills:
 
 Full-Stack Development
-- React, Next.js, TypeScript
-- Django, FastAPI, Laravel
-- PostgreSQL, MongoDB, Redis
+- React, Next.js, Vue.js, TypeScript
+- Django, FastAPI, Laravel, PHP
+- Node.js, Express, Nest.js, Golang
+- PostgreSQL, MongoDB, Redis, MySQL
 
-DevOps & Cloud
-- Docker, Kubernetes, Terraform
-- AWS, GCP, Azure
+DevOps & Infrastructure
+- Docker, Kubernetes, Terraform, Ansible
+- AWS, GCP, Azure, DigitalOcean
+- GitOps, ArgoCD, GitHub Actions
 - CI/CD, Infrastructure as Code
+- Traefik, Nginx, Load Balancing
+
+Blockchain & Cryptography
+- Solana, Rust, Anchor Framework
+- Zero-Knowledge Proofs
+- Smart Contracts, Web3.js
+- Cryptocurrency Integration
 
 Security & Networking
-- Penetration Testing
-- Bug Bounty Hunting
-- Network Security
+- Penetration Testing (OWASP Top 10)
+- Bug Bounty Hunting (HackerOne, Bugcrowd)
+- Network Security, Kali Linux
+- Burp Suite, Metasploit
 
-Machine Learning & AI
-- LangChain, OpenAI Integration
-- Natural Language Processing
-- Sentiment Analysis
+AI/ML & Data Science
+- LangChain, OpenAI API Integration
+- TensorFlow, PyTorch, Hugging Face
+- Medical AI Model Fine-tuning
+- NLP, Sentiment Analysis, Computer Vision
+
+Cloud Platforms
+- AWS (EC2, S3, RDS, Lambda, ECS)
+- Google Cloud Platform
+- Microsoft Azure
+- Oracle Cloud, Linode
 
 Project Management
-- Team Leadership
+- Team Leadership & Mentoring
+- Agile/Scrum Methodologies
 - Strategic Planning
-- Agile Methodologies`,
+- Cross-functional Collaboration`,
             };
 
         case "experience":
@@ -518,20 +558,28 @@ Project Management
                 type: "text",
                 content: `Professional Experience:
 
-Lead Developer & Founder at Nexis LTD (2021 - Present)
-- Founded and grew the company from ground up
-- Led development of multiple successful platforms
-- Managed team and technical infrastructure
-- Implemented cutting-edge technologies
+Team Lead, Development & Technology at TRODAD International LTD. (Feb 2025 - Present)
+- Lead development team across healthcare, e-commerce, and blockchain domains
+- Architect enterprise systems with Kubernetes/Docker infrastructure
+- Built zero-knowledge privacy mixer on Solana
+- Fine-tuned medical AI models and integrated DICOM networks
+- Manage CI/CD pipelines for ERP systems
+
+Lead Developer & Founder at Nexis LTD (Sept 2021 - Feb 2025)
+- Founded and scaled company managing 44+ production microservices
+- Architected complete infrastructure using Terraform/Kubernetes/Ansible
+- Delivered e-commerce platforms, SaaS systems, and internal tools
+- Built GitOps workflows and automated CI/CD pipelines
+- Maintained 99.9% uptime across all services
 
 Bug Bounty Hunter (2016 - Present)
-- Discovered critical vulnerabilities
+- Discovered critical vulnerabilities on HackerOne and Bugcrowd
 - Worked with major tech companies
-- Specialized in web application security
+- Specialized in web application security (OWASP Top 10)
 - Consistent top performer in programs
 
-Systems Support Assistant at myBurgerLab (2020 - 2021)
-- Maintained and optimized ERP system
+Systems Support Assistant at myBurgerLab (Jan 2020 - June 2021)
+- Maintained ERP system operations for restaurant chain
 - Improved operational efficiency
 - Provided technical support and training`,
             };
@@ -551,12 +599,12 @@ YouTube Video Sentiment Analysis
 - Real-time sentiment classification
 - Python & Flask implementation
 
-QR Code Generator (qr.nexisltd.com)
+QR Code Generator
 - Advanced QR code customization
 - Multiple format support
 - Built with Next.js
 
-URL Shortener (url.nexisltd.com)
+URL Shortener
 - Efficient URL shortening service
 - Analytics and tracking
 - Modern web technologies`,

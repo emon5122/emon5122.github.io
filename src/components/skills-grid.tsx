@@ -13,57 +13,60 @@ const skills = [
             { name: "React", icon: "react" },
             { name: "Next.js", icon: "nextjs" },
             { name: "TypeScript", icon: "typescript" },
+            { name: "Python", icon: "python" },
             { name: "Django", icon: "django" },
-            { name: "Golang", icon: "golang" },
             { name: "Laravel", icon: "laravel" },
+            { name: "Golang", icon: "golang" },
+            { name: "Node.js", icon: "nodejs" },
+            { name: "PostgreSQL", icon: "postgresql" },
         ],
     },
     {
-        name: "DevOps",
+        name: "DevOps & Infrastructure",
         level: 5,
         keywords: [
-            { name: "Docker", icon: "docker" },
             { name: "Kubernetes", icon: "kubernetes" },
+            { name: "Docker", icon: "docker" },
             { name: "Terraform", icon: "terraform" },
-            { name: "Jenkins", icon: "jenkins" },
             { name: "Ansible", icon: "ansible" },
+            { name: "Jenkins", icon: "jenkins" },
             { name: "GitHub Actions", icon: "githubactions" },
         ],
     },
     {
-        name: "Cloud & Infrastructure",
+        name: "Blockchain & Cryptography",
+        level: 4,
+        keywords: [
+            { name: "Solana", icon: "solana" },
+            { name: "Rust", icon: "rust" },
+            { name: "Web3", icon: "web3" },
+        ],
+    },
+    {
+        name: "AI/ML & Data Science",
+        level: 4,
+        keywords: [
+            { name: "PyTorch", icon: "pytorch" },
+            { name: "TensorFlow", icon: "tensorflow" },
+            { name: "OpenAI", icon: "openai" },
+        ],
+    },
+    {
+        name: "Cybersecurity",
+        level: 5,
+        keywords: [
+            { name: "Kali Linux", icon: "kalilinux" },
+            { name: "Linux", icon: "linux" },
+        ],
+    },
+    {
+        name: "Cloud Platforms",
         level: 4,
         keywords: [
             { name: "AWS", icon: "aws" },
             { name: "GCP", icon: "gcp" },
             { name: "Azure", icon: "azure" },
             { name: "Vercel", icon: "vercel" },
-        ],
-    },
-    {
-        name: "AI & Machine Learning",
-        level: 3,
-        keywords: [
-            { name: "TensorFlow", icon: "tensorflow" },
-            { name: "OpenAI", icon: "openai" },
-            { name: "Python", icon: "python" },
-        ],
-    },
-    {
-        name: "Databases",
-        level: 5,
-        keywords: [
-            { name: "PostgreSQL", icon: "postgresql" },
-            { name: "MongoDB", icon: "mongodb" },
-            { name: "Redis", icon: "redis" },
-        ],
-    },
-    {
-        name: "Security",
-        level: 5,
-        keywords: [
-            { name: "Linux", icon: "linux" },
-            { name: "Kali Linux", icon: "kalilinux" },
         ],
     },
 ];
@@ -95,11 +98,10 @@ export function SkillsGrid() {
                                             {[...Array(5)].map((_, i) => (
                                                 <div
                                                     key={i}
-                                                    className={`w-2 h-2 rounded-full mx-0.5 ${
-                                                        i < skill.level
-                                                            ? "bg-primary"
-                                                            : "bg-muted"
-                                                    }`}
+                                                    className={`w-2 h-2 rounded-full mx-0.5 ${i < skill.level
+                                                        ? "bg-primary"
+                                                        : "bg-muted"
+                                                        }`}
                                                 />
                                             ))}
                                         </div>

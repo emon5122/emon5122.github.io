@@ -7,47 +7,72 @@ import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 
 const projects = [
     {
-        name: "Global Business Idea Generator",
+        name: "Solana Privacy Mixer",
         description:
-            "AI-powered system that generates business ideas based on location and market trends.",
+            "Production-ready zero-knowledge transaction mixer implementing Groth16 zk-SNARKs. Built with Rust/Anchor smart contracts, TypeScript/React frontend, and Node.js relayer network for anonymous withdrawals on Solana blockchain.",
         technologies: [
-            { name: "Python", icon: "python" },
-            { name: "OpenAI", icon: "openai" },
-            { name: "Next.js", icon: "nextjs" },
+            { name: "Solana", icon: "solana" },
+            { name: "Rust", icon: "rust" },
             { name: "TypeScript", icon: "typescript" },
+            { name: "React", icon: "react" },
+            { name: "Docker", icon: "docker" },
         ],
     },
     {
-        name: "YouTube Video Sentiment Analysis",
+        name: "Healthcare AI Platform",
         description:
-            "Machine learning-powered system for analyzing YouTube comment sentiments.",
+            "Enterprise medical imaging platform with DICOM viewer integration, ML-powered diagnostic assistance, and laboratory information system bridge. Manages complete radiology workflow from image upload to AI-assisted diagnosis for medical institutions.",
         technologies: [
             { name: "Python", icon: "python" },
-            { name: "Flask", icon: "flask" },
-            { name: "TensorFlow", icon: "tensorflow" },
+            { name: "PyTorch", icon: "pytorch" },
+            { name: "TypeScript", icon: "typescript" },
+            { name: "Java", icon: "java" },
+            { name: "Docker", icon: "docker" },
         ],
     },
     {
-        name: "QR Code Generator",
+        name: "Enterprise SaaS Platform",
         description:
-            "Advanced QR code generation system with customization options.",
-        url: "https://qr.nexisltd.com",
+            "Led development of multi-tenant enterprise software suite managing 45+ production applications: human resource management, e-commerce solutions, single sign-on infrastructure, and digital transformation tools. Serves 1000+ users across multiple business domains.",
         technologies: [
-            { name: "Next.js", icon: "nextjs" },
+            { name: "Kubernetes", icon: "kubernetes" },
+            { name: "Terraform", icon: "terraform" },
+            { name: "Python", icon: "python" },
             { name: "TypeScript", icon: "typescript" },
-            { name: "Tailwind CSS", icon: "tailwindcss" },
+            { name: "PostgreSQL", icon: "postgresql" },
+        ],
+    },
+    {
+        name: "Restaurant Management Platform",
+        description:
+            "Full-stack food ordering and restaurant management system with real-time order processing, payment gateway integration, and administrative dashboard. Serving multiple restaurant clients with live production deployment.",
+        technologies: [
+            { name: "Laravel", icon: "laravel" },
+            { name: "JavaScript", icon: "javascript" },
+            { name: "MySQL", icon: "mysql" },
+            { name: "AWS", icon: "aws" },
+        ],
+    },
+    {
+        name: "Education Management Platform",
+        description:
+            "Comprehensive learning management system with student tracking, course administration, and dynamic form builder. Active production deployment with 14 ongoing feature developments.",
+        technologies: [
+            { name: "TypeScript", icon: "typescript" },
+            { name: "Next.js", icon: "nextjs" },
+            { name: "PostgreSQL", icon: "postgresql" },
             { name: "Vercel", icon: "vercel" },
         ],
     },
     {
-        name: "URL Shortener",
-        description: "Fast and efficient URL shortening service.",
-        url: "https://url.nexisltd.com",
+        name: "HealthTech Suite",
+        description:
+            "Leading development of 57+ repositories including diagnostic platforms, prescription management, patient portals, and healthcare provider applications. Manages complete healthcare workflow from appointment scheduling to treatment delivery.",
         technologies: [
-            { name: "Next.js", icon: "nextjs" },
             { name: "TypeScript", icon: "typescript" },
-            { name: "MongoDB", icon: "mongodb" },
-            { name: "Vercel", icon: "vercel" },
+            { name: "Laravel", icon: "laravel" },
+            { name: "Python", icon: "python" },
+            { name: "Docker", icon: "docker" },
         ],
     },
 ];

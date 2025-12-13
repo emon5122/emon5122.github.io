@@ -38,10 +38,10 @@ export function HeroSection() {
             text: "|",
         },
         {
-            text: "Ethical",
+            text: "Technical",
         },
         {
-            text: "Hacker",
+            text: "Leader",
         },
     ];
 

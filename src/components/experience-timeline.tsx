@@ -5,26 +5,36 @@ import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 
 const experiences = [
     {
+        company: "TRODAD International LTD.",
+        position: "Team Lead, Development & Technology",
+        date: "February, 2025-Present",
+        location: "Mipur DOHS",
+        description:
+            "Lead development team architecting enterprise systems across healthcare, e-commerce, and blockchain domains. Manage full-stack development, infrastructure automation (Kubernetes/Docker), and AI/ML integration. Key achievements: built zero-knowledge privacy mixer on Solana, fine-tuned medical AI models for radiology, integrated DICOM networks, deployed IoT-enabled healthcare workflows, and managed CI/CD pipelines for ERP systems.",
+    },
+    {
         company: "Nexis LTD",
         position: "Lead Developer & Founder",
-        date: "September, 2021-Present",
+        date: "September, 2021-February, 2025",
         location: "Dhaka, Bangladesh",
         description:
-            "Led company operations, project management, and long-term strategic growth. Developed platforms such as Madhobimart, Sardarhandicrafts, and Crafts Maker.",
+            "Founded and scaled engineering company managing 44+ production microservices serving real customers. Architected complete infrastructure using Terraform/Kubernetes/Ansible. Delivered e-commerce platforms, SaaS systems (HRM, school management, digital menus), and internal tools. Built GitOps workflows, automated CI/CD pipelines, and published reusable NPM packages. Maintained 99.9% uptime across all production services.",
     },
     {
         company: "Freelance",
-        position: "Bug bounty hunter",
+        position: "Bug Bounty Hunter & Security Researcher",
         date: "2016-Present",
+        location: "Remote",
         description:
-            "Identified and reported vulnerabilities across platforms like HackerOne and Bugcrowd, contributing to improving website security.",
+            "Active security researcher on HackerOne and Bugcrowd platforms. Identify and responsibly disclose vulnerabilities in web applications and APIs through penetration testing and OWASP Top 10 exploitation. Earned recognition and monetary rewards for discovering critical security issues across multiple platforms.",
     },
     {
         company: "myBurgerLab",
         position: "Systems Support Assistant",
         date: "January, 2020-June, 2021",
+        location: "Malaysia",
         description:
-            "Maintained ERP system and supported day-to-day processes while pursuing studies.",
+            "Maintained ERP system operations for restaurant chain while pursuing university studies. Handled system troubleshooting, performance monitoring, and technical support ensuring smooth daily operations.",
     },
     {
         company: "ZE Enterprise",
@@ -32,7 +42,7 @@ const experiences = [
         date: "May 2019-August 2019",
         location: "Shah Alam, Malaysia",
         description:
-            "Built e-commerce platform using WordPress and WooCommerce, implemented SEO strategies.",
+            "Developed e-commerce platform using WordPress/WooCommerce and implemented SEO optimization strategies, improving site visibility and customer engagement for online product sales.",
     },
 ];
 
