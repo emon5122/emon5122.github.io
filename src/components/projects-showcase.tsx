@@ -100,18 +100,8 @@ export function ProjectsShowcase() {
                         >
                             <Card className="h-full">
                                 <CardHeader>
-                                    <CardTitle className="flex items-center justify-between">
-                                        <span>{project.name}</span>
-                                        {project.url && (
-                                            <a
-                                                href={project.url}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                                className="text-sm text-primary hover:underline"
-                                            >
-                                                Visit →
-                                            </a>
-                                        )}
+                                    <CardTitle>
+                                        {project.name}
                                     </CardTitle>
                                 </CardHeader>
                                 <CardContent>
