@@ -11,18 +11,6 @@ const config = {
     theme: {
         extend: {
             colors: {
-                terminal: {
-                    DEFAULT: "#f4f4f4",
-                    dark: "#1a1a1a",
-                    text: {
-                        DEFAULT: "#2d3748",
-                        dark: "#a0aec0",
-                    },
-                    prompt: {
-                        DEFAULT: "#4a5568",
-                        dark: "#63b3ed",
-                    },
-                },
                 border: "hsl(var(--border))",
                 input: "hsl(var(--input))",
                 ring: "hsl(var(--ring))",
@@ -47,10 +35,6 @@ const config = {
                 accent: {
                     DEFAULT: "hsl(var(--accent))",
                     foreground: "hsl(var(--accent-foreground))",
-                },
-                popover: {
-                    DEFAULT: "hsl(var(--popover))",
-                    foreground: "hsl(var(--popover-foreground))",
                 },
                 card: {
                     DEFAULT: "hsl(var(--card))",
