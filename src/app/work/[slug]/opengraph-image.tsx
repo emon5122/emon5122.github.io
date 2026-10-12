@@ -30,14 +30,17 @@ export default async function OpengraphImage({ params }: { params: Promise<{ slu
                     ihemon.me · Case study
                 </div>
                 <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
-                    <div style={{ fontSize: 64, fontWeight: 700, lineHeight: 1.1 }}>{c?.title ?? site.name}</div>
-                    <div style={{ fontSize: 30, color: "#a1a1aa", lineHeight: 1.3 }}>
+                    <div style={{ fontSize: 60, fontWeight: 700, lineHeight: 1.1 }}>{c?.title ?? site.name}</div>
+                    <div style={{ fontSize: 28, color: "#a1a1aa", lineHeight: 1.3 }}>
                         {c?.summary ?? site.headline}
                     </div>
                 </div>
-                <div style={{ display: "flex", gap: 40, fontSize: 26, color: "#d4d4d8" }}>
+                <div style={{ display: "flex", gap: 40 }}>
                     {(c?.highlights ?? []).map((h) => (
-                        <span key={h.label}>{`${h.value} ${h.label}`}</span>
+                        <div key={h.label} style={{ display: "flex", flexDirection: "column", width: 320 }}>
+                            <span style={{ fontSize: 40, fontWeight: 700, color: "#fafafa" }}>{h.value}</span>
+                            <span style={{ fontSize: 22, color: "#a1a1aa", lineHeight: 1.3 }}>{h.label}</span>
+                        </div>
                     ))}
                 </div>
             </div>
