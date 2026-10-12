@@ -100,6 +100,15 @@ export default async function CaseStudyPage({ params }: Props) {
                         <span className="text-muted-foreground">{c.transferable}</span>
                     </p>
                 </Section>
+                {c.incident && (
+                    <Section title="Incident & what changed">
+                        <div className="space-y-3 rounded-xl border bg-muted/30 p-5 leading-relaxed text-muted-foreground">
+                            {c.incident.map((p) => (
+                                <p key={p}>{p}</p>
+                            ))}
+                        </div>
+                    </Section>
+                )}
                 <Section title="Stack">
                     <ul className="flex flex-wrap gap-2">
                         {c.stack.map((s) => (

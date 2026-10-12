@@ -21,6 +21,7 @@ export type CaseStudy = {
     };
     impact: string[];
     impactNote?: string;
+    incident?: string[];
     transferable: string;
     stack: string[];
 };
@@ -142,6 +143,11 @@ export const caseStudies: CaseStudy[] = [
             "95 + 35 releases shipped without a dedicated ops team",
         ],
         impactNote: "Production figures, October 2026.",
+        incident: [
+            "On a multi-site radiology platform, images kept arriving but studies stopped reaching radiologists' worklist for two hours, and two server reboots didn't help.",
+            "Working from logs after the fact, I traced it to a nightly cleanup job scanning a 10 GB table without an index. A healthcheck mistook the busy workers for dead ones, and our own watchdog then restarted them in an endless loop, sending the job back to the beginning each time.",
+            "I shipped an index, a bounded and resumable rewrite of the job, a healthcheck fix and a rolling-window restart breaker in the watchdog. I also added worklist-lag and lock-wait alerts, which caught the next lock convoy within 10 minutes.",
+        ],
         transferable:
             "Any high-throughput protocol server, store-and-forward edge system or regulated data pipeline: fintech, IoT, logistics.",
         stack: [
