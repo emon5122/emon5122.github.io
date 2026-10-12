@@ -411,14 +411,16 @@ export const experience: Role[] = [
     },
     {
         company: "Nexis Ltd",
-        title: "Founder & Lead Engineer",
+        title: "Founder",
         period: "Sep 2021 – present",
         location: "Dhaka, Bangladesh",
+        context:
+            "Self-employed. Full-time founder and lead engineer until Feb 2025; part-time since then, alongside my role at TRODAD.",
         bullets: [
             "Founded and run a software company delivering multi-tenant SaaS (HRM, school management, digital menus, e-commerce, SSO); own architecture, delivery and client relationships.",
             "Built the infrastructure-as-code foundation: Terraform across Oracle Cloud, Proxmox and AWS EKS, with Packer and Ansible, reused by every product.",
             "Built a Go logistics backend and published open-source npm packages.",
-            "Launched Lepti, a VPN and proxy service, from zero.",
+            "Launched Lepti (2026), a VPN and proxy service, from zero.",
         ],
     },
     {
