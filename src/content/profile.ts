@@ -440,7 +440,7 @@ export const experience: Role[] = [
 ];
 
 export const education = [
-    { school: "SEGi University", degree: "BIT, Computer Networking", year: "2021" },
+    { school: "SEGi University", degree: "BIT, Computer Networking", year: "2022" },
     { school: "SEGi College", degree: "Diploma", year: "2019" },
 ];
 
