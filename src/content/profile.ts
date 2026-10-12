@@ -52,7 +52,9 @@ export const site = {
         "Engineering lead who designs and runs platforms that must work at scale: Rust and Go systems, Kubernetes, GitOps, on-prem fleets. I lead four product lines and shipped an imaging backbone (70k studies/month), a fleet control plane (86 servers) and a delivery pipeline with ~1,500 releases in 18 months.",
     description:
         "Engineering lead for platform and distributed systems in Rust, Go and Kubernetes. Case studies: a national-scale imaging pipeline, a control plane for 86 on-prem servers, a VPN product built from zero, and a Rust + WASM device integration engine.",
-    location: "Dhaka, Bangladesh (UTC+6) · open to remote and relocation",
+    location:
+        "Dhaka, Bangladesh (UTC+6) · Remote (overlap EU/US-East) · Open to relocation with visa sponsorship",
+    note: "Client names and references available on request (under NDA). Metrics come from production telemetry.",
     email: "hello@ihemon.me",
     links: {
         resume: "https://rxresu.me/emon5122/istiak-hassan-emon",
@@ -79,14 +81,14 @@ export const caseStudies: CaseStudy[] = [
         slug: "rust-imaging-pipeline",
         title: "Rust imaging pipeline at national scale",
         summary:
-            "Built the ingest, storage and routing backbone of a national radiology platform in Rust: hundreds of sites, mixed equipment, flaky links, and nothing allowed to drop.",
+            "Built the ingest, storage and routing backbone of a national radiology platform in Rust: 375 active sites, mixed equipment, flaky links, and nothing allowed to drop.",
         highlights: [
             { value: "70,651", label: "studies in Sep 2026" },
             { value: "7×", label: "growth in 6 months" },
             { value: "234 ms", label: "p95 operation latency" },
         ],
         problem:
-            "A national radiology platform had to receive, store, route and serve medical images from hundreds of hospitals and diagnostic centres. The sites run mixed equipment on unreliable links, and every byte is sensitive patient data.",
+            "A national radiology platform had to receive, store, route and serve medical images from hundreds of imaging sites. The sites run mixed equipment on unreliable links, and every byte is sensitive patient data.",
         constraints: [
             "Speak both the legacy DIMSE protocol suite and modern DICOMweb.",
             "Sites lose connectivity, so nothing may be dropped in transit.",
@@ -131,7 +133,7 @@ export const caseStudies: CaseStudy[] = [
                 "Modalities send to an on-site router that queues, routes and compresses studies, then forwards them to the central PACS. Images land in object storage with a Redis cache; viewers and reporting consume events over RabbitMQ. A separate export path strips identity before data leaves for research and AI datasets.",
         },
         impact: [
-            "375 active client sites sending studies in the last 30 days (467 onboarded)",
+            "375 active sites sending studies in the last 30 days",
             "70,651 studies in Sep 2026, up from ~10k in Mar: 7× in 6 months",
             "~62k images and 25.6 GB ingested per day; 6.3M images (4.5 TB) indexed",
             "PACS operation latency p50 52 ms, p95 234 ms",
@@ -167,7 +169,7 @@ export const caseStudies: CaseStudy[] = [
             { value: "85", label: "servers on the WireGuard mesh" },
         ],
         problem:
-            "A large ERP runs on a server inside each of 88 hospitals. Every update, configuration fix and support session used to need a person on site, and versions drifted apart.",
+            "A large ERP runs on its own on-prem server at each of 88 sites (86 servers). Every update, configuration fix and support session used to need a person on site, and versions drifted apart.",
         constraints: [
             "Sites sit behind NAT on consumer-grade links, mostly Windows boxes.",
             "Updates must never interrupt work during opening hours.",
@@ -340,9 +342,9 @@ export const caseStudies: CaseStudy[] = [
 export const moreWork: Project[] = [
     {
         name: "GitOps platform foundation",
-        label: "design + demo",
+        label: "production cluster · edge design + demo",
         description:
-            "Production k3s + ArgoCD cluster (Longhorn, CloudNativePG, MinIO, kube-prometheus; 35 app manifests) and Terraform, Packer and Ansible across Oracle Cloud, Proxmox and EKS. The hub-and-spoke pull model for 40+ edge sites is a design with a public demo, not yet deployed.",
+            "A production k3s + ArgoCD cluster for one product line (Longhorn, CloudNativePG, MinIO, kube-prometheus; 35 app manifests), plus Terraform, Packer and Ansible across Oracle Cloud, Proxmox and EKS. The linked repo is the hub-and-spoke pull model for 40+ edge sites: a design with a public demo, not yet deployed.",
         href: "https://github.com/emon5122/argocd-hub-spoke",
         tags: ["Kubernetes", "ArgoCD", "Terraform", "Ansible"],
     },
@@ -391,14 +393,14 @@ export const experience: Role[] = [
         period: "Feb 2025 – present",
         location: "Dhaka, Bangladesh",
         context:
-            "Lead engineering across four product lines: a national radiology platform, a multi-site hospital ERP, a lab-instrument integration product and a consumer health platform.",
+            "Lead engineering across four product lines: a national radiology platform, a multi-site ERP, a lab-instrument integration product and a consumer health platform.",
         bullets: [
-            "Set the architecture, the trunk-plus-release-PR workflow and the platform standards every team ships on; top contributor with ~6,500 commits across 142 repos in 18 months.",
+            "Built and run the hiring loop, mentor engineers into owners of production services, and set the architecture and code-review standards every team ships on.",
             "Built a Rust imaging server and site router that grew 7× in 6 months to 70,651 studies a month from 375 active sites, at p95 234 ms.",
-            "Designed and led a Go fleet control plane for 86 on-prem servers; automatic pull updates keep 83 of 88 sites on the current release.",
-            "Built a Rust + WASM device integration engine: live at 8 labs, 25,000+ results captured since June 2026, 90 releases.",
-            "Made rollout repeatable: a one-binary Go deployer for the full stack and a production k3s + ArgoCD GitOps cluster.",
-            "Standardised release engineering (release-please, goreleaser, Tauri auto-update): ~1,500 tagged releases in 18 months.",
+            "Designed and led a Go fleet control plane for an ERP live at 88 sites on 86 servers; automatic pull updates keep 83 of 88 sites on the current release.",
+            "Built a Rust + WASM device integration engine: live at 8 labs, ~23 analyzer families supported, 25,000+ results captured since June 2026, 90 releases.",
+            "Made rollout repeatable: a one-binary Go deployer for the full stack and a production k3s + ArgoCD GitOps cluster for one product line.",
+            "Defined the release process (trunk + release PRs, release-please, goreleaser, Tauri auto-update) that shipped ~1,500 tagged releases in 18 months.",
         ],
     },
     {
@@ -499,15 +501,17 @@ export const skills: { group: string; items: string[] }[] = [
             "WireGuard / nftables",
             "Tor onion services",
             "Secure release and auto-update",
-            "Bug bounty since 2016",
+            "Security background: offensive testing and responsible disclosure",
         ],
     },
     {
         group: "Leadership",
         items: [
             "Leading 4 product lines",
-            "Architecture-first design reviews",
-            "Release and branching process",
+            "Hiring loop and interviews",
+            "Mentoring engineers into service owners",
+            "Architecture and code-review standards",
+            "Release process (~1,500 releases)",
             "Founder: clients and delivery",
             "Ownership across 6 production languages",
         ],

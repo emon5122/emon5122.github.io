@@ -162,6 +162,7 @@ export default function Home() {
             <section aria-labelledby="experience" className="border-t bg-muted/30">
                 <div className="mx-auto max-w-5xl px-4 py-16">
                     <SectionHeading id="experience" eyebrow="Career" title="Experience" />
+                    <p className="-mt-4 mb-8 text-sm text-muted-foreground">{site.note}</p>
                     <ol className="relative space-y-10 border-l pl-6">
                         {experience.map((r) => (
                             <li key={r.company} className="relative">
@@ -230,7 +231,7 @@ export default function Home() {
                     <SectionHeading id="contact" eyebrow="Contact" title="Let's talk" />
                     <p className="max-w-2xl leading-relaxed text-muted-foreground">
                         Open to staff, principal and lead roles in platform, backend, DevOps/SRE and
-                        engineering leadership, in any industry: remote, in Dhaka, or abroad with relocation.
+                        engineering leadership, in any industry: remote (overlapping EU or US-East hours), in Dhaka, or abroad with visa sponsorship.
                     </p>
                     <div className="mt-6 flex flex-wrap gap-3">
                         <a
