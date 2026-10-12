@@ -7,6 +7,7 @@ import {
     skills,
 } from "@/content/profile";
 import { ArrowRight, ArrowUpRight, Download, FileText, Github, Linkedin, Mail } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 
 const jsonLd = {
@@ -15,6 +16,7 @@ const jsonLd = {
     name: site.name,
     alternateName: site.shortName,
     url: site.url,
+    image: `${site.url}/headshot.png`,
     email: `mailto:${site.email}`,
     jobTitle: site.jobTitle,
     description: site.summary,
@@ -49,8 +51,21 @@ export default function Home() {
 
             {/* Hero */}
             <section className="mx-auto max-w-5xl px-4 pb-16 pt-16 sm:pt-24">
-                <p className="text-sm text-muted-foreground">{site.location}</p>
-                <h1 className="mt-3 text-4xl font-bold tracking-tight sm:text-6xl">{site.name}</h1>
+                <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:gap-8">
+                    <Image
+                        src="/headshot.webp"
+                        alt="Istiak Hassan Emon"
+                        width={512}
+                        height={512}
+                        priority
+                        sizes="(min-width: 640px) 144px, 112px"
+                        className="h-28 w-28 shrink-0 rounded-full object-cover shadow-lg ring-2 ring-border ring-offset-4 ring-offset-background sm:h-36 sm:w-36"
+                    />
+                    <div>
+                        <p className="text-sm text-muted-foreground">{site.location}</p>
+                        <h1 className="mt-3 text-4xl font-bold tracking-tight sm:text-6xl">{site.name}</h1>
+                    </div>
+                </div>
                 <p className="mt-4 text-lg font-medium text-primary sm:text-xl">{site.headline}</p>
                 <p className="mt-6 max-w-2xl text-base leading-relaxed text-muted-foreground sm:text-lg">
                     {site.summary}
