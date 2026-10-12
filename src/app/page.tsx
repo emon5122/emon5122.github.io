@@ -6,7 +6,7 @@ import {
     site,
     skills,
 } from "@/content/profile";
-import { ArrowRight, ArrowUpRight, FileText, Github, Linkedin, Mail } from "lucide-react";
+import { ArrowRight, ArrowUpRight, Download, FileText, Github, Linkedin, Mail } from "lucide-react";
 import Link from "next/link";
 
 const jsonLd = {
@@ -61,6 +61,13 @@ export default function Home() {
                         className={`${cta} bg-primary text-primary-foreground hover:bg-primary/90`}
                     >
                         <FileText className="h-4 w-4" aria-hidden /> Resume
+                    </a>
+                    <a
+                        href={site.links.resumePdf}
+                        download="Istiak-Hassan-Emon-Resume.pdf"
+                        className={`${cta} border hover:bg-accent`}
+                    >
+                        <Download className="h-4 w-4" aria-hidden /> Download PDF
                     </a>
                     <a href={`mailto:${site.email}`} className={`${cta} border hover:bg-accent`}>
                         <Mail className="h-4 w-4" aria-hidden /> {site.email}
@@ -225,12 +232,24 @@ export default function Home() {
                         Open to staff, principal and lead roles in platform, backend, DevOps/SRE and
                         engineering leadership, in any industry: remote, in Dhaka, or abroad with relocation.
                     </p>
-                    <a
-                        href={`mailto:${site.email}`}
-                        className={`${cta} mt-6 bg-primary text-primary-foreground hover:bg-primary/90`}
-                    >
-                        <Mail className="h-4 w-4" aria-hidden /> {site.email}
-                    </a>
+                    <div className="mt-6 flex flex-wrap gap-3">
+                        <a
+                            href={`mailto:${site.email}`}
+                            className={`${cta} bg-primary text-primary-foreground hover:bg-primary/90`}
+                        >
+                            <Mail className="h-4 w-4" aria-hidden /> {site.email}
+                        </a>
+                        <a href={site.links.resume} className={`${cta} border hover:bg-accent`}>
+                            <FileText className="h-4 w-4" aria-hidden /> Resume
+                        </a>
+                        <a
+                            href={site.links.resumePdf}
+                            download="Istiak-Hassan-Emon-Resume.pdf"
+                            className={`${cta} border hover:bg-accent`}
+                        >
+                            <Download className="h-4 w-4" aria-hidden /> Download PDF
+                        </a>
+                    </div>
                 </div>
             </section>
         </>

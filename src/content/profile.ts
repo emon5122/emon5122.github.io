@@ -56,6 +56,7 @@ export const site = {
     email: "hello@ihemon.me",
     links: {
         resume: "https://rxresu.me/emon5122/istiak-hassan-emon",
+        resumePdf: "/resume.pdf",
         github: "https://github.com/emon5122",
         githubOrg: "https://github.com/nexisltd",
         linkedin: "https://www.linkedin.com/in/istiak-hassan-emon",
