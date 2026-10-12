@@ -48,11 +48,11 @@ export const site = {
     name: "Istiak Hassan Emon",
     shortName: "Emon",
     headline:
-        "Engineering Lead · Platform & Distributed Systems · Rust, Go, Kubernetes",
+        "Engineering Lead · Full-Stack Product & Platform · TypeScript, Python, Go, Rust",
     summary:
-        "Engineering lead who designs and runs platforms that must work at scale: Rust and Go systems, Kubernetes, GitOps, on-prem fleets. I lead four product lines and shipped an imaging backbone (70k studies/month), a fleet control plane (86 servers) and a delivery pipeline with ~1,500 releases in 18 months.",
+        "Engineering lead who builds the whole product: web, mobile, desktop, backend, and the platform it runs on. I lead four product lines and shipped a radiology reporting web app, a mobile app that serves a whole on-prem fleet from one build, Tauri desktop tools live at 8 labs, a Rust imaging pipeline (70k studies a month) and a control plane for 86 servers.",
     description:
-        "Engineering lead for platform and distributed systems in Rust, Go and Kubernetes. Case studies: a national-scale imaging pipeline, a control plane for 86 on-prem servers, a VPN product built from zero, and a Rust + WASM device integration engine.",
+        "Engineering lead who builds whole products: React/Next.js web, Expo mobile, Tauri desktop, Python/Go/Rust backends, and the Kubernetes platform under them.",
     location:
         "Dhaka, Bangladesh (UTC+6) · Remote (overlap EU/US-East) · Open to relocation with visa sponsorship",
     note: "Client names and references available on request (under NDA). Metrics come from production telemetry.",
@@ -66,18 +66,218 @@ export const site = {
     },
     jobTitle: "Development & Technology Team Lead",
     knowsAbout: [
-        "Rust",
+        "TypeScript",
+        "React",
+        "Next.js",
+        "React Native",
+        "Tauri",
+        "Python",
         "Go",
+        "Rust",
         "Kubernetes",
         "Platform Engineering",
         "Distributed Systems",
-        "GitOps",
-        "Site Reliability Engineering",
         "Engineering Leadership",
     ],
 };
 
 export const caseStudies: CaseStudy[] = [
+    {
+        slug: "radiology-reporting-web",
+        title: "Radiology worklist and reporting web app",
+        summary:
+            "The screen radiologists work in all day: worklist, study reconciliation, collaborative reporting and in-browser image viewing, built on Next.js 15.",
+        highlights: [
+            { value: "846", label: "of my commits since Mar 2025" },
+            { value: "444", label: "releases shipped" },
+            { value: "375", label: "active sites on the platform" },
+        ],
+        problem:
+            "Radiologists on a national imaging platform need one fast screen to pick up studies, match them to orders, read the images, write the report with colleagues and send it out, with nothing to install.",
+        constraints: [
+            "Worklists are long and busy: filtering, sorting and bulk assignment have to stay fast.",
+            "Medical images are large DICOM datasets, and they have to open in a browser tab.",
+            "More than one person can work on a report at the same time.",
+            "The app ships continuously while people are reading, so releases must not break live sessions.",
+        ],
+        built: [
+            "A Next.js 15 App Router app in TypeScript: dashboard, worklist with filters and bulk assignment, study reconciliation, report editor, shareable report links, billing and exports, and chat.",
+            "In-browser DICOM viewing and segmentation with Cornerstone3D and vtk.js.",
+            "Real-time collaborative report editing on Yjs + Hocuspocus.",
+            "A typed data layer: TanStack Query and Table, Zustand, React Hook Form + Zod, on Tailwind 4 and shadcn/Radix.",
+            "OpenTelemetry tracing in the browser app, with Vitest unit and Playwright end-to-end tests.",
+        ],
+        architecture: {
+            flow: [
+                { title: "Worklist", lines: ["TanStack Table", "filters · bulk assign"] },
+                { title: "Reconciliation", lines: ["match study ↔ order"] },
+                { title: "Viewer", lines: ["Cornerstone3D · vtk.js", "in the browser"] },
+                { title: "Report editor", lines: ["Yjs + Hocuspocus", "live co-editing"] },
+                { title: "Platform API", lines: ["Django / DRF", "events + storage"] },
+            ],
+            branch: {
+                from: 3,
+                label: "talk it through",
+                node: { title: "Chat", lines: ["in-app, per study"] },
+            },
+            caption:
+                "A radiologist picks studies off the worklist, reconciles them with orders, opens the images in the browser and writes the report, with colleagues editing the same document live. Everything reads from and writes to the platform API behind the imaging pipeline in case 4.",
+        },
+        impact: [
+            "846 of the repo's 2,351 commits, from Mar 2025 to now",
+            "444 tagged releases through release-please, shipped while radiologists were reading",
+            "The working front end of a platform with 375 active sites and 70,651 studies in Sep 2026",
+            "Platform-wide median of 8.1 minutes from study arrival to finalised report",
+        ],
+        impactNote:
+            "Commit and release counts from GitHub; platform figures from production telemetry, October 2026.",
+        transferable:
+            "Any data-heavy operator console: dispatch and logistics, trading and risk desks, support tooling, collaborative editors.",
+        stack: [
+            "Next.js 15",
+            "React",
+            "TypeScript",
+            "Tailwind 4",
+            "shadcn / Radix",
+            "TanStack Query + Table",
+            "Zustand",
+            "React Hook Form + Zod",
+            "Cornerstone3D",
+            "vtk.js",
+            "Yjs",
+            "OpenTelemetry",
+            "Vitest",
+            "Playwright",
+        ],
+    },
+    {
+        slug: "universal-mobile-app",
+        title: "One mobile app for every on-prem site",
+        summary:
+            "An Expo / React Native app that finds the user's site on its own, picks the local or public server automatically and delivers push alerts, so a single build serves a whole fleet.",
+        highlights: [
+            { value: "1", label: "build for every site" },
+            { value: "7", label: "Expo / React Native apps" },
+            { value: "~170", label: "mobile commits" },
+        ],
+        problem:
+            "The ERP in case 5 runs on its own server at each site. Staff wanted it on their phones, but a separate app per site would never be maintained, and the right server address changes with whether the phone is on the site's network.",
+        constraints: [
+            "One build, every site: no per-site configuration in the app.",
+            "Phones move between the site LAN and mobile data; the app has to follow.",
+            "Alerts must arrive even when the app is in the background.",
+            "Reuse the existing web UI instead of rewriting the ERP for mobile.",
+        ],
+        built: [
+            "Relay login: the user signs in once, and a relay tells the app which site they belong to and where its server lives.",
+            "Local-versus-public server detection with NetInfo, re-checked when the network changes.",
+            "A WebView host for the ERP's web UI, native push (Pusher + expo-notifications) and background tasks.",
+            "The same detection and notification pattern in an Electron desktop wrapper for the site PCs.",
+            "Beyond this app: telehealth patient and provider apps (Expo Router, NativeWind, LiveKit video consults, i18n, secure storage, maps and calendars) and LinkVault, a public offline-first bookmark manager (expo-sqlite, share intent, FlashList, Reanimated, Jest + RNTL).",
+        ],
+        architecture: {
+            flow: [
+                { title: "Phone app", lines: ["Expo · React Native"] },
+                { title: "Relay login", lines: ["finds the user's site"] },
+                { title: "Network check", lines: ["NetInfo", "site LAN or internet"] },
+                { title: "Site server", lines: ["ERP web UI", "in a WebView"] },
+            ],
+            branch: {
+                from: 3,
+                label: "alerts",
+                node: { title: "Push", lines: ["Pusher → expo-notifications", "background tasks"] },
+            },
+            caption:
+                "The app asks the relay where the user's site is, then checks whether the phone can reach that server on the local network or has to go over the internet, and loads the site's web UI. Events from the site arrive as native push notifications.",
+        },
+        impact: [
+            "One APK for every site instead of one build per site",
+            "50 of the app's 54 commits, Sep 2025 to Aug 2026",
+            "Telehealth patient and provider apps with WebRTC video consults: 27 + 22 commits, Apr to Aug 2026",
+            "LinkVault (public): 37 of 39 commits, offline-first on SQLite with a Jest + RNTL test suite",
+        ],
+        impactNote: "Commit counts from GitHub, October 2026.",
+        transferable:
+            "Field and frontline apps for multi-tenant or on-prem software: retail, logistics, franchises, any product deployed per customer.",
+        stack: [
+            "Expo",
+            "React Native",
+            "Expo Router",
+            "NativeWind",
+            "expo-notifications",
+            "Pusher",
+            "NetInfo",
+            "react-native-webview",
+            "expo-sqlite",
+            "LiveKit (WebRTC)",
+            "i18next",
+            "Electron",
+        ],
+    },
+    {
+        slug: "desktop-edge-apps",
+        title: "Desktop apps at the edge: router, viewer and lab bridge",
+        summary:
+            "Three Tauri 2 apps with Rust cores and React UIs that run on the PC beside the equipment: a DICOM router, a native image viewer, and a lab-instrument bridge with WASM plug-ins.",
+        highlights: [
+            { value: "105", label: "releases across three apps" },
+            { value: "25,000+", label: "lab results captured since Jun 2026" },
+            { value: "8", label: "labs live in the last 30 days" },
+        ],
+        problem:
+            "Imaging and lab equipment sits next to whatever PC the site owns. Studies have to reach the cloud over shaky links, radiologists wanted a fast native viewer instead of an old Java one, and labs were re-typing results from analyzers that each speak their own ASTM or HL7 dialect.",
+        constraints: [
+            "Runs on Windows and Linux, on hardware nobody chose for it.",
+            "Updates arrive silently and never interrupt work.",
+            "Adding a device must not need a new release of the whole app.",
+            "Nothing is dropped when the link goes down, and results are never silently mangled.",
+        ],
+        built: [
+            "A lab-instrument bridge (Tauri 2, 59 releases): serial and TCP links, device parsers compiled to WebAssembly and loaded as plug-ins, 17 bidirectional order modules, QC, licensing, data retention and result charts.",
+            "A DICOM router (Rust core + React UI, 35 releases): DIMSE SCP/SCU, rule-based routing, a persistent store-and-forward queue, 5 image codecs including JPEG-XL, HTTP forwarding and study previews in Cornerstone3D.",
+            "A native DICOM viewer (Tauri 2, 11 releases since Sep 2026) on Cornerstone3D, with deep links and global shortcuts, replacing a Java/OSGi workstation.",
+            "Shared desktop plumbing: Tauri updater, autostart, store and deep-link plugins; React UIs on TanStack Router, Query and Table with Radix.",
+        ],
+        architecture: {
+            flow: [
+                { title: "Equipment", lines: ["scanners · analyzers", "serial / TCP / DIMSE"] },
+                { title: "Rust core", lines: ["protocol framing", "queue · WASM plug-ins"] },
+                { title: "React UI", lines: ["Tauri 2 · TanStack"] },
+                { title: "Upstream", lines: ["PACS · LIS / ERP API"] },
+            ],
+            branch: {
+                from: 3,
+                label: "orders flow back",
+                node: { title: "Order modules × 17", lines: ["bidirectional"] },
+            },
+            caption:
+                "Each app keeps the hard part in Rust: protocol framing, queuing and, in the lab bridge, a WASM parser per device family. A React UI on Tauri 2 shows status and lets staff act. Results and studies go upstream; lab orders come back down. A new device is a new plug-in, not a new app release.",
+        },
+        impact: [
+            "Lab bridge live at 8 labs and clinics in the last 30 days (28 accounts installed)",
+            "25,000+ analyzer results captured without manual entry since June 2026 (a lower bound)",
+            "12 analyzer models from 9 brands connected in the field; ~23 analyzer families supported through plug-ins",
+            "105 releases across the three apps, all delivered by auto-update",
+            "633 of my commits across the three repos (326 + 228 + 79)",
+        ],
+        impactNote: "Production figures and GitHub counts, October 2026.",
+        transferable:
+            "Edge and on-prem desktop software: device and protocol integration, industrial and IoT data capture, point-of-sale, anything that must keep working offline.",
+        stack: [
+            "Tauri 2",
+            "Rust",
+            "React",
+            "TypeScript",
+            "TanStack Router + Query + Table",
+            "Radix",
+            "WebAssembly",
+            "Cornerstone3D",
+            "ASTM",
+            "HL7",
+            "DICOM",
+            "Serial / TCP",
+        ],
+    },
     {
         slug: "rust-imaging-pipeline",
         title: "Rust imaging pipeline at national scale",
@@ -98,7 +298,7 @@ export const caseStudies: CaseStudy[] = [
         ],
         built: [
             "A PACS server in Rust from scratch (95 releases): C-STORE/FIND/GET/MOVE/ECHO, WADO-RS/URI, QIDO-RS and STOW-RS, S3/MinIO object storage, a Redis cache behind a circuit breaker, Prometheus metrics and audit logging.",
-            "A site-side router in Rust + Tauri (35 releases): full DIMSE SCP/SCU suite, rule-based routing, a persistent store-and-forward queue, 5 image codecs including JPEG-XL, and auto-update.",
+            "A site-side Rust router with a persistent store-and-forward queue (details in the desktop case).",
             "A de-identification data hub (Rust/Axum) with a 5-zone S3 pipeline from quarantine to delivery, fed by a Go exporter, so imaging data can feed AI training without exposing identity.",
             "A Go study prefetcher and a one-binary Go deployer that brings up the whole stack with automatic DNS.",
         ],
@@ -119,7 +319,7 @@ export const caseStudies: CaseStudy[] = [
                 },
                 {
                     title: "Viewers + reporting",
-                    lines: ["events over RabbitMQ"],
+                    lines: ["web app (case 1)", "events over RabbitMQ"],
                 },
             ],
             branch: {
@@ -161,7 +361,6 @@ export const caseStudies: CaseStudy[] = [
             "S3 / MinIO",
             "Prometheus",
             "Django",
-            "Next.js",
         ],
     },
     {
@@ -186,6 +385,7 @@ export const caseStudies: CaseStudy[] = [
             "A Go management server (68 releases) that holds desired state per site: modules, configuration and versions.",
             "Per-site agents: a sidecar that pulls and applies desired state, a migrator for safe schema rollout, and a sentinel for health and alerting.",
             "A CLI and an audited remote terminal that replace on-site visits and shared credentials.",
+            "An operator dashboard in React + TanStack Router/Query/Table with an xterm.js web terminal (45 releases).",
             "dockwarden, my open-source Go container auto-updater, running on every box.",
         ],
         architecture: {
@@ -232,120 +432,26 @@ export const caseStudies: CaseStudy[] = [
         impactNote: "Production figures, October 2026.",
         transferable:
             "Edge and retail fleets, IoT, and any company running software on customer premises.",
-        stack: ["Go", "WireGuard", "Docker", "PostgreSQL", "S3", "Laravel"],
-    },
-    {
-        slug: "lepti-vpn",
-        title: "Lepti: building a VPN product from zero",
-        summary:
-            "Founder-built VPN and proxy service: control API, node agents and a desktop client, designed security-first from the first commit.",
-        highlights: [
-            { value: "0 → 1", label: "product, end to end" },
-            { value: "8", label: "repositories" },
-            { value: "Passkeys", label: "+ TOTP from day one" },
-        ],
-        problem:
-            "Family members studying abroad needed reliable, censorship-resistant access to the internet. A personal fix grew into a product with accounts, billing and seats.",
-        constraints: [
-            "Has to work on networks that actively block VPN traffic.",
-            "Accounts hold payment and access rights, so authentication must be strong without being annoying.",
-            "Nodes come and go; their config must converge without manual edits.",
-        ],
-        built: [
-            "A Go control API: accounts, billing, seats, passkeys (WebAuthn) and TOTP.",
-            "A Go node agent that reconciles xray / hysteria proxy config and nftables firewall rules from the control API.",
-            "A Rust desktop client that fetches its profile and connects.",
-        ],
-        architecture: {
-            flow: [
-                {
-                    title: "Desktop client",
-                    lines: ["Rust", "fetches profile"],
-                },
-                {
-                    title: "Control API",
-                    lines: ["Go · billing · seats", "passkeys + TOTP"],
-                },
-                {
-                    title: "Node agents",
-                    lines: ["Go", "reconcile config"],
-                },
-                {
-                    title: "Proxy nodes",
-                    lines: ["xray / hysteria", "nftables"],
-                },
-            ],
-            caption:
-                "The control API issues credentials and assigns seats. Node agents reconcile proxy configuration and firewall rules toward what the API says. Clients fetch a profile from the API, then connect straight to a node.",
-        },
-        impact: [
-            "Took the product from idea to a working service: API, node fleet and desktop client",
-            "Security-first auth: passkeys and TOTP instead of passwords alone",
-            "Declarative node config: agents converge on desired state instead of hand-edited servers",
-        ],
-        transferable:
-            "Zero-to-one product ownership: networking, auth, billing and client software in one person's hands.",
-        stack: ["Go", "Rust", "xray", "hysteria", "nftables", "WebAuthn / passkeys", "TOTP"],
-    },
-    {
-        slug: "device-integration-engine",
-        title: "Plugin-based Rust + WASM device integration engine",
-        summary:
-            "A desktop bridge that captures results from lab instruments over ASTM and HL7, with each device family's parser shipped as a WASM plug-in.",
-        highlights: [
-            { value: "25,000+", label: "results captured since Jun 2026" },
-            { value: "8", label: "labs live in the last 30 days" },
-            { value: "12", label: "analyzer models in the field" },
-        ],
-        problem:
-            "Clinical labs re-typed analyzer results by hand: slow and error-prone. Every instrument speaks its own dialect of ASTM or HL7, and every lab has a different mix.",
-        constraints: [
-            "Runs on whatever Windows or Linux PC sits beside the instrument.",
-            "Adding a device must not need a new release of the whole app.",
-            "Orders flow both ways, and results must never be silently mangled.",
-        ],
-        built: [
-            "A Rust + Tauri desktop bridge (~500 commits, 90 releases) with serial and TCP links.",
-            "Device parsers compiled to WebAssembly and loaded as plug-ins, one per device family.",
-            "17 bidirectional order modules, quality control and licensing.",
-        ],
-        architecture: {
-            flow: [
-                { title: "Instrument", lines: ["serial / TCP"] },
-                { title: "Framing", lines: ["ASTM / HL7"] },
-                {
-                    title: "WASM plug-in",
-                    lines: ["one parser per", "device family"],
-                },
-                { title: "Normalised results", lines: ["QC checks"] },
-                { title: "Host system API", lines: ["LIS / ERP"] },
-            ],
-            branch: {
-                from: 4,
-                label: "orders flow back",
-                node: {
-                    title: "Order modules × 17",
-                    lines: ["bidirectional"],
-                },
-            },
-            caption:
-                "Raw instrument traffic is framed by protocol, then handed to the WASM parser for that device family, which emits normalised results for the host system. Orders travel the other way. A new device is a new plug-in, not a new app release.",
-        },
-        impact: [
-            "Live at 8 labs and clinics in the last 30 days (28 accounts installed)",
-            "25,000+ analyzer results captured without manual entry since first production in June 2026 (a lower bound)",
-            "12 analyzer models from 9 brands connected in the field, over TCP and serial, one-way and bidirectional",
-            "~23 analyzer families supported through plug-ins; 17 bidirectional order modules",
-            "90 releases shipped with auto-update",
-        ],
-        impactNote: "Production figures, October 2026.",
-        transferable:
-            "Device and protocol integration, plug-in architectures, industrial and IoT data capture.",
-        stack: ["Rust", "Tauri", "WebAssembly", "ASTM", "HL7", "Serial / TCP"],
+        stack: ["Go", "WireGuard", "Docker", "PostgreSQL", "S3", "Laravel", "React", "TanStack"],
     },
 ];
 
 export const moreWork: Project[] = [
+    {
+        name: "Lepti",
+        label: "founder project · not public yet",
+        description:
+            "A VPN and proxy service built from zero: a Go control API (accounts, billing, seats, passkeys + TOTP), Go node agents that reconcile xray / hysteria and nftables, and a Rust desktop client.",
+        href: "https://github.com/nexisltd",
+        tags: ["Go", "Rust", "WireGuard / nftables", "Passkeys"],
+    },
+    {
+        name: "Sniprl",
+        description:
+            "Open-source URL shortener with click analytics. Next.js, Prisma + PostgreSQL, next-auth, TanStack Query, React Hook Form + Zod.",
+        href: "https://github.com/emon5122/url-handler",
+        tags: ["Next.js", "Prisma", "TypeScript"],
+    },
     {
         name: "GitOps platform foundation",
         label: "production cluster · edge design + demo",
@@ -371,9 +477,9 @@ export const moreWork: Project[] = [
     {
         name: "cableops",
         description:
-            "Network topology designer and cable-management tool. 13 releases.",
+            "Network topology designer and cable-management canvas on TanStack Start, tRPC, Drizzle and better-auth. 13 releases.",
         href: "https://github.com/emon5122/cableops",
-        tags: ["TypeScript", "Networking"],
+        tags: ["TypeScript", "TanStack Start", "tRPC"],
     },
     {
         name: "scalerunnergh",
@@ -402,9 +508,10 @@ export const experience: Role[] = [
             "Lead engineering across four product lines: a national radiology platform, a multi-site ERP, a lab-instrument integration product and a consumer health platform.",
         bullets: [
             "Built and run the hiring loop, mentor engineers into owners of production services, and set the architecture and code-review standards every team ships on.",
+            "Built the product surfaces as well as the backends: a Next.js radiology reporting app, Tauri desktop apps for routing, viewing and lab integration, and an Expo app that serves every ERP site from one build.",
             "Built a Rust imaging server and site router that grew 7× in 6 months to 70,651 studies a month from 375 active sites, at p95 234 ms.",
             "Designed and led a Go fleet control plane for an ERP live at 88 sites on 86 servers; automatic pull updates keep 83 of 88 sites on the current release.",
-            "Built a Rust + WASM device integration engine: live at 8 labs, ~23 analyzer families supported, 25,000+ results captured since June 2026, 90 releases.",
+            "Built a Rust + WASM device integration engine: live at 8 labs, ~23 analyzer families supported, 25,000+ results captured since June 2026, 59 releases.",
             "Made rollout repeatable: a one-binary Go deployer for the full stack and a production k3s + ArgoCD GitOps cluster for one product line.",
             "Defined the release process (trunk + release PRs, release-please, goreleaser, Tauri auto-update) that shipped ~1,500 tagged releases in 18 months.",
         ],
@@ -417,7 +524,7 @@ export const experience: Role[] = [
         context:
             "Self-employed. Full-time founder and lead engineer until Feb 2025; part-time since then, alongside my role at TRODAD.",
         bullets: [
-            "Founded and run a software company delivering multi-tenant SaaS (HRM, school management, digital menus, e-commerce, SSO); own architecture, delivery and client relationships.",
+            "Founded and run a software company delivering multi-tenant SaaS (HRM, education, school management, digital menus, e-commerce, SSO) on React/Next.js and Django; own architecture, delivery and client relationships.",
             "Built the infrastructure-as-code foundation: Terraform across Oracle Cloud, Proxmox and AWS EKS, with Packer and Ansible, reused by every product.",
             "Built a Go logistics backend and published open-source npm packages.",
             "Launched Lepti (2026), a VPN and proxy service, from zero.",
@@ -446,24 +553,54 @@ export const education = [
 
 export const skills: { group: string; items: string[] }[] = [
     {
-        group: "Languages",
-        items: ["Rust", "Go", "TypeScript", "Python", "PHP", "SQL", "Shell / PowerShell"],
+        group: "Web",
+        items: [
+            "TypeScript",
+            "React",
+            "Next.js (App Router)",
+            "TanStack Router / Query / Table / Form / Start",
+            "Tailwind CSS",
+            "shadcn / Radix",
+            "Zustand",
+            "React Hook Form + Zod",
+            "tRPC",
+            "Recharts",
+            "Framer Motion",
+            "Vite",
+            "Vitest",
+            "Playwright",
+        ],
     },
     {
-        group: "Backend & distributed systems",
+        group: "Mobile",
         items: [
-            "Distributed services",
-            "Protocol servers (DICOM, HL7, ASTM)",
-            "Axum",
-            "Gin",
-            "Django / DRF",
-            "Celery",
-            "RabbitMQ",
+            "React Native",
+            "Expo",
+            "Expo Router",
+            "NativeWind",
+            "Offline-first (expo-sqlite)",
+            "Push notifications",
+            "WebRTC video (LiveKit)",
+            "i18next",
+            "Jest + RNTL",
+        ],
+    },
+    {
+        group: "Desktop",
+        items: ["Tauri 2 (Rust + React)", "Electron", "Auto-update", "Deep links", "WebAssembly plug-ins"],
+    },
+    {
+        group: "Backend",
+        items: [
+            "Python: Django / DRF, FastAPI, Celery",
+            "Node.js: Express, Next.js route handlers",
+            "Go: Gin",
+            "Rust: Axum",
+            "PHP: Laravel",
             "REST APIs",
-            "Tauri",
-            "WebAssembly plug-ins",
-            "Next.js",
-            "Laravel",
+            "Protocol servers (DICOM, HL7, ASTM)",
+            "RabbitMQ",
+            "Distributed services",
         ],
     },
     {
@@ -479,6 +616,7 @@ export const skills: { group: string; items: string[] }[] = [
             "Longhorn",
             "WireGuard",
             "Prometheus / Grafana / Loki",
+            "OpenTelemetry",
             "GitHub Actions",
             "release-please",
             "goreleaser",
@@ -494,6 +632,9 @@ export const skills: { group: string; items: string[] }[] = [
             "PostgreSQL (CloudNativePG)",
             "Redis",
             "S3 / MinIO",
+            "SQLite",
+            "Prisma",
+            "Drizzle",
             "Message queues",
             "Staged data pipelines",
             "Large schema migrations",
@@ -502,9 +643,10 @@ export const skills: { group: string; items: string[] }[] = [
     {
         group: "Security",
         items: [
-            "De-identification pipelines",
             "Passkeys / WebAuthn",
             "TOTP",
+            "next-auth / better-auth",
+            "De-identification pipelines",
             "Audited remote access",
             "WireGuard / nftables",
             "Tor onion services",
@@ -521,7 +663,7 @@ export const skills: { group: string; items: string[] }[] = [
             "Architecture and code-review standards",
             "Release process (~1,500 releases)",
             "Founder: clients and delivery",
-            "Ownership across 6 production languages",
+            "Shipping on web, mobile, desktop and backend",
         ],
     },
 ];
