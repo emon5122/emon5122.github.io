@@ -6,6 +6,7 @@ const nav = [
     { name: "Work", href: "/#work" },
     { name: "Experience", href: "/#experience" },
     { name: "Skills", href: "/#skills" },
+    { name: "Blog", href: "/blog" },
     { name: "Contact", href: "/#contact" },
 ];
 
