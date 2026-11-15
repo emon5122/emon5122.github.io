@@ -48,9 +48,9 @@ export const site = {
     name: "Istiak Hassan Emon",
     shortName: "Emon",
     headline:
-        "Engineering Lead · Full-Stack Product & Platform · TypeScript, Python, Go, Rust",
+        "Engineering Lead · Solution Architect · Platform & Distributed Systems · TypeScript, Python, Go, Rust",
     summary:
-        "Engineering lead who builds the whole product: web, mobile, desktop, backend, and the platform it runs on. I lead four product lines and shipped a radiology reporting web app, a mobile app that serves a whole on-prem fleet from one build, Tauri desktop tools live at 8 labs, a Rust imaging pipeline (70k studies a month) and a control plane for 86 servers.",
+        "Engineering lead and solution architect who designs the whole system and ships it: web, mobile, desktop, backend, and the platform it runs on. I lead four product lines and shipped a radiology reporting web app, a mobile app that serves a whole on-prem fleet from one build, Tauri desktop tools live at 8 labs, a Rust imaging pipeline (70k studies a month) and a control plane for 86 servers.",
     description:
         "Engineering lead who builds whole products: React/Next.js web, Expo mobile, Tauri desktop, Python/Go/Rust backends, and the Kubernetes platform under them.",
     location:
