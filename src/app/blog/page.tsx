@@ -4,7 +4,7 @@ import Link from "next/link";
 
 export const metadata: Metadata = {
     title: "Blog",
-    description: "Engineering write-ups by Istiak Hassan Emon: debugging stories and lessons from production systems, Rust, Go and Kubernetes.",
+    description: "Engineering write-ups by Istiak Hassan Emon: debugging stories and lessons from production systems: containers, Docker registries and real-time audio.",
     alternates: { canonical: "/blog", types: { "application/rss+xml": "/blog/feed.xml" } },
 };
 
