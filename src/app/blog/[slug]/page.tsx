@@ -35,8 +35,18 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function PostPage({ params }: Props) {
     const p = getPost((await params).slug);
     if (!p) notFound();
+    const jsonLd = {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        headline: p.title,
+        description: p.summary,
+        datePublished: p.date,
+        author: { "@type": "Person", name: site.name, url: site.url },
+        mainEntityOfPage: `${site.url}/blog/${p.slug}`,
+    };
     return (
         <article className="mx-auto max-w-3xl px-4 py-12 sm:py-16">
+            <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
             <Link href="/blog" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
                 <ArrowLeft className="h-4 w-4" aria-hidden /> All posts
             </Link>

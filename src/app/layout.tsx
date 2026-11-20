@@ -8,7 +8,7 @@ import type React from "react";
 
 const inter = Inter({ subsets: ["latin"], display: "swap" });
 
-const title = `${site.name} · ${site.headline}`;
+const title = `${site.name} · Engineering Lead & Solution Architect`;
 
 export const metadata: Metadata = {
     metadataBase: new URL(site.url),
