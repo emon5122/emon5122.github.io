@@ -51,6 +51,12 @@ export function SiteFooter() {
                     <a href={site.links.linkedin} className="hover:text-foreground">
                         LinkedIn
                     </a>
+                    <a href={site.links.youtube} className="hover:text-foreground">
+                        YouTube
+                    </a>
+                    <a href={site.links.facebook} className="hover:text-foreground">
+                        Facebook
+                    </a>
                 </div>
             </div>
         </footer>

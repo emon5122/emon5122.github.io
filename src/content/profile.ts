@@ -74,6 +74,8 @@ export const site = {
         github: "https://github.com/emon5122",
         githubOrg: "https://github.com/nexisltd",
         linkedin: "https://www.linkedin.com/in/istiak-hassan-emon",
+        youtube: "https://www.youtube.com/@IstiakHassanEmon",
+        facebook: "https://www.facebook.com/ihemon.dev",
     },
     jobTitle: "Development & Technology Team Lead",
     knowsAbout: [
