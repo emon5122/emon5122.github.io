@@ -34,6 +34,17 @@ export type Project = {
     tags: string[];
 };
 
+export type CreativeProject = {
+    name: string;
+    nativeName?: string;
+    label: string;
+    pitch: string;
+    built: string[];
+    tools: string[];
+    stills: { src: string; alt: string; caption: string }[];
+    links: { label: string; href: string }[];
+};
+
 export type Role = {
     company: string;
     title: string;
@@ -495,6 +506,46 @@ export const moreWork: Project[] = [
             "Small open-source TypeScript utilities published on npm under @nexisltd.",
         href: "https://github.com/nexisltd",
         tags: ["TypeScript", "npm"],
+    },
+];
+
+export const creativeProjects: CreativeProject[] = [
+    {
+        name: "Chaya Goli",
+        nativeName: "ছায়া গলি",
+        label: "my animation studio · Bangla 3D series",
+        pitch:
+            "A Bangla 3D animated series for all ages, set in one Dhaka para: its galli, tea stall, kacha bazar, school field and rooftops, by day, at dusk and through load-shedding nights. I founded the studio and built the production pipeline behind it: Blender for every frame, AI agents to help with the build passes and the checks.",
+        built: [
+            "One canonical .blend per character and set, continued pass after pass and never forked; every asset carries a recipe file that records how it was made.",
+            "Judged look-dev passes: each pass ends in a board of stills, and a separate judge reads them at full size and at phone-thumbnail size, measures exposure itself and returns pass or a fix list before the asset moves on.",
+            "One town file that links every set at its fixed place, with a check render after each set pass to prove it still fits the street.",
+            "Shared libraries: a modular kit of Bangladeshi props and Bangla signage, and lighting presets (warm day, dusk, pre-dawn, load-shedding night) reused across every set.",
+        ],
+        tools: ["Blender", "Python", "Blender MCP", "AI agents", "ComfyUI", "Git LFS"],
+        stills: [
+            {
+                src: "/creative/chaya-goli/town-night.webp",
+                alt: "Aerial night view over a Dhaka neighbourhood: lit windows, a minaret and a full moon over a hazy skyline",
+                caption: "The para from above, at night",
+            },
+            {
+                src: "/creative/chaya-goli/school-day.webp",
+                alt: "A lime-washed two-storey primary school with a Bangla name board, a fenced path and a coaching sign on the roof",
+                caption: "The primary school, day",
+            },
+            {
+                src: "/creative/chaya-goli/school-field-dusk.webp",
+                alt: "The school field at dusk with a Shaheed Minar, the Bangladesh flag, puddles and coloured houses behind",
+                caption: "The school field at dusk",
+            },
+            {
+                src: "/creative/chaya-goli/bazar-load-shedding.webp",
+                alt: "A candle-lit fish stall in the kacha bazar during load-shedding, with a handwritten Bangla price board",
+                caption: "Kacha bazar fish stall, load-shedding",
+            },
+        ],
+        links: [{ label: "YouTube channel", href: "https://www.youtube.com/@chayagoli" }],
     },
 ];
 

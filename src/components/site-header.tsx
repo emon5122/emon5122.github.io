@@ -2,8 +2,9 @@ import { site } from "@/content/profile";
 import Link from "next/link";
 import { ThemeToggle } from "./theme-toggle";
 
-const nav = [
+const nav: { name: string; href: string; wide?: boolean }[] = [
     { name: "Work", href: "/#work" },
+    { name: "Creative", href: "/#creative", wide: true },
     { name: "Experience", href: "/#experience" },
     { name: "Skills", href: "/#skills" },
     { name: "Blog", href: "/blog" },
@@ -23,7 +24,7 @@ export function SiteHeader() {
                         <Link
                             key={item.href}
                             href={item.href}
-                            className="rounded-md px-2 py-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground sm:px-3"
+                            className={`${item.wide ? "hidden sm:inline-block " : ""}rounded-md px-2 py-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground sm:px-3`}
                         >
                             {item.name}
                         </Link>

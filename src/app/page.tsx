@@ -1,12 +1,13 @@
 import {
     caseStudies,
+    creativeProjects,
     education,
     experience,
     moreWork,
     site,
     skills,
 } from "@/content/profile";
-import { ArrowRight, ArrowUpRight, Download, FileText, Github, Linkedin, Mail } from "lucide-react";
+import { ArrowRight, ArrowUpRight, Download, FileText, Github, Linkedin, Mail, Youtube } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -173,8 +174,76 @@ export default function Home() {
                 </div>
             </section>
 
+            {/* Creative projects */}
+            <section aria-labelledby="creative" className="border-t bg-muted/30">
+                <div className="mx-auto max-w-5xl px-4 py-16">
+                    <SectionHeading id="creative" eyebrow="Outside work" title="Creative projects" />
+                    {creativeProjects.map((p) => (
+                        <article key={p.name} className="rounded-xl border bg-card p-6 sm:p-8">
+                            <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                                <h3 className="text-xl font-semibold">{p.name}</h3>
+                                {p.nativeName && (
+                                    <span lang="bn" className="text-lg text-muted-foreground">
+                                        {p.nativeName}
+                                    </span>
+                                )}
+                            </div>
+                            <span className="mt-2 inline-block w-fit rounded-full border border-primary/40 px-2 py-0.5 text-xs font-medium text-primary">
+                                {p.label}
+                            </span>
+                            <p className="mt-4 max-w-3xl leading-relaxed text-muted-foreground">{p.pitch}</p>
+
+                            <ul className="mt-6 grid gap-4 sm:grid-cols-2">
+                                {p.stills.map((s) => (
+                                    <li key={s.src}>
+                                        <figure>
+                                            <Image
+                                                src={s.src}
+                                                alt={s.alt}
+                                                width={1280}
+                                                height={720}
+                                                sizes="(min-width: 1024px) 456px, (min-width: 640px) 50vw, 100vw"
+                                                className="aspect-video w-full rounded-lg border object-cover"
+                                            />
+                                            <figcaption className="mt-2 text-xs text-muted-foreground">
+                                                {s.caption}
+                                            </figcaption>
+                                        </figure>
+                                    </li>
+                                ))}
+                            </ul>
+
+                            <h4 className="mt-8 text-sm font-semibold">What I built</h4>
+                            <ul className="mt-3 list-disc space-y-1.5 pl-5 text-sm leading-relaxed text-muted-foreground marker:text-primary">
+                                {p.built.map((b) => (
+                                    <li key={b}>{b}</li>
+                                ))}
+                            </ul>
+                            <ul className="mt-5 flex flex-wrap gap-2">
+                                {p.tools.map((t) => (
+                                    <li
+                                        key={t}
+                                        className="rounded-full bg-secondary px-2.5 py-1 text-xs text-secondary-foreground"
+                                    >
+                                        {t}
+                                    </li>
+                                ))}
+                            </ul>
+                            <div className="mt-6 flex flex-wrap gap-3">
+                                {p.links.map((l) => (
+                                    <a key={l.href} href={l.href} className={`${cta} border hover:bg-accent`}>
+                                        <Youtube className="h-4 w-4" aria-hidden /> {l.label}
+                                        <ArrowUpRight className="h-4 w-4 text-muted-foreground" aria-hidden />
+                                    </a>
+                                ))}
+                            </div>
+                        </article>
+                    ))}
+                </div>
+            </section>
+
             {/* Experience */}
-            <section aria-labelledby="experience" className="border-t bg-muted/30">
+            <section aria-labelledby="experience" className="border-t">
                 <div className="mx-auto max-w-5xl px-4 py-16">
                     <SectionHeading id="experience" eyebrow="Career" title="Experience" />
                     <p className="-mt-4 mb-8 text-sm text-muted-foreground">{site.note}</p>
@@ -217,7 +286,7 @@ export default function Home() {
             </section>
 
             {/* Skills */}
-            <section aria-labelledby="skills" className="border-t">
+            <section aria-labelledby="skills" className="border-t bg-muted/30">
                 <div className="mx-auto max-w-5xl px-4 py-16">
                     <SectionHeading id="skills" eyebrow="Toolbox" title="Skills" />
                     <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
@@ -241,7 +310,7 @@ export default function Home() {
             </section>
 
             {/* Contact */}
-            <section aria-labelledby="contact" className="border-t bg-muted/30">
+            <section aria-labelledby="contact" className="border-t">
                 <div className="mx-auto max-w-5xl px-4 py-16">
                     <SectionHeading id="contact" eyebrow="Contact" title="Let's talk" />
                     <p className="max-w-2xl leading-relaxed text-muted-foreground">
