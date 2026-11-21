@@ -43,6 +43,17 @@ export default async function PostPage({ params }: Props) {
         datePublished: p.date,
         author: { "@type": "Person", name: site.name, url: site.url },
         mainEntityOfPage: `${site.url}/blog/${p.slug}`,
+        ...(p.video && {
+            video: {
+                "@type": "VideoObject",
+                name: p.title,
+                description: p.summary,
+                uploadDate: p.date,
+                thumbnailUrl: `https://i.ytimg.com/vi/${p.video}/hqdefault.jpg`,
+                contentUrl: `https://www.youtube.com/watch?v=${p.video}`,
+                embedUrl: `https://www.youtube-nocookie.com/embed/${p.video}`,
+            },
+        }),
     };
     return (
         <article className="mx-auto max-w-3xl px-4 py-12 sm:py-16">
@@ -54,6 +65,19 @@ export default async function PostPage({ params }: Props) {
             <time dateTime={p.date} className="mt-2 block text-sm text-muted-foreground">
                 {formatDate(p.date)} · {site.name}
             </time>
+            {p.video && (
+                <div className="mt-8 aspect-video w-full overflow-hidden rounded-lg border bg-muted">
+                    <iframe
+                        className="h-full w-full"
+                        src={`https://www.youtube-nocookie.com/embed/${p.video}`}
+                        title={p.title}
+                        loading="lazy"
+                        allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        referrerPolicy="strict-origin-when-cross-origin"
+                        allowFullScreen
+                    />
+                </div>
+            )}
             <div
                 className="prose prose-zinc mt-8 max-w-none dark:prose-invert prose-a:text-primary prose-pre:overflow-x-auto"
                 dangerouslySetInnerHTML={{ __html: p.html }}
