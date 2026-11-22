@@ -1,6 +1,7 @@
 ---
 title: "A 429 is not an outage: how DockWarden stopped hammering Docker Hub"
 date: "2026-11-21"
+video: "VpNIEbvAbvk"
 summary: "My auto-updater retried every pass after Docker Hub rate-limited it, so it never got out from under the limit. The fix was a hold that doubles."
 ---
 
@@ -21,4 +22,4 @@ DockWarden, my Docker auto-update and health monitor, kept getting rate limited 
 2. Back off per registry host for 429s, per image for auth errors.
 3. Check that your recovery signal measures the same thing that failed.
 
-Code: [github.com/emon5122/dockwarden](https://github.com/emon5122/dockwarden).
+Code: [github.com/emon5122/dockwarden](https://github.com/emon5122/dockwarden). The 70-second Short: [youtube.com/shorts/3S7mhT29B0w](https://youtube.com/shorts/3S7mhT29B0w).
