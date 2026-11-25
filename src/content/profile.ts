@@ -76,6 +76,9 @@ export const site = {
         linkedin: "https://www.linkedin.com/in/istiak-hassan-emon",
         youtube: "https://www.youtube.com/@IstiakHassanEmon",
         facebook: "https://www.facebook.com/ihemon.dev",
+        reddit: "https://www.reddit.com/user/IstiakHassanEmon/",
+        instagram: "https://www.instagram.com/ihemo.n1/",
+        threads: "https://www.threads.com/@ihemo.n1",
     },
     jobTitle: "Development & Technology Team Lead",
     knowsAbout: [

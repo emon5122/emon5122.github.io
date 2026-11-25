@@ -41,7 +41,7 @@ export function SiteFooter() {
         <footer className="border-t">
             <div className="mx-auto flex max-w-5xl flex-col gap-2 px-4 py-8 text-sm text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
                 <p>© {new Date().getFullYear()} {site.name}</p>
-                <div className="flex gap-4">
+                <div className="flex flex-wrap gap-x-4 gap-y-2">
                     <a href={`mailto:${site.email}`} className="hover:text-foreground">
                         {site.email}
                     </a>
@@ -56,6 +56,15 @@ export function SiteFooter() {
                     </a>
                     <a href={site.links.facebook} className="hover:text-foreground">
                         Facebook
+                    </a>
+                    <a href={site.links.reddit} className="hover:text-foreground">
+                        Reddit
+                    </a>
+                    <a href={site.links.instagram} className="hover:text-foreground">
+                        Instagram
+                    </a>
+                    <a href={site.links.threads} className="hover:text-foreground">
+                        Threads
                     </a>
                 </div>
             </div>

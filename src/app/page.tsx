@@ -22,7 +22,12 @@ const jsonLd = {
     jobTitle: site.jobTitle,
     description: site.summary,
     address: { "@type": "PostalAddress", addressLocality: "Dhaka", addressCountry: "BD" },
-    sameAs: [site.links.github, site.links.linkedin, site.links.youtube, site.links.facebook],
+    sameAs: [
+        site.links.github, site.links.linkedin, site.links.youtube, site.links.facebook,
+        site.links.reddit,
+        site.links.instagram,
+        site.links.threads,
+    ],
     knowsAbout: site.knowsAbout,
     worksFor: { "@type": "Organization", name: experience[0].company },
     alumniOf: { "@type": "CollegeOrUniversity", name: education[0].school },
