@@ -66,6 +66,9 @@ export function SiteFooter() {
                     <a href={site.links.threads} className="hover:text-foreground">
                         Threads
                     </a>
+                    <a href={site.links.x} className="hover:text-foreground">
+                        X
+                    </a>
                 </div>
             </div>
         </footer>

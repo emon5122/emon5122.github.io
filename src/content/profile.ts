@@ -79,6 +79,7 @@ export const site = {
         reddit: "https://www.reddit.com/user/IstiakHassanEmon/",
         instagram: "https://www.instagram.com/ihemo.n1/",
         threads: "https://www.threads.com/@ihemo.n1",
+        x: "https://x.com/istiakhemon",
     },
     jobTitle: "Development & Technology Team Lead",
     knowsAbout: [

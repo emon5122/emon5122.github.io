@@ -27,6 +27,7 @@ const jsonLd = {
         site.links.reddit,
         site.links.instagram,
         site.links.threads,
+        site.links.x,
     ],
     knowsAbout: site.knowsAbout,
     worksFor: { "@type": "Organization", name: experience[0].company },
